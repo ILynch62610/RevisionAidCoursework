@@ -3,6 +3,7 @@ package Model;
 import java.util.Date;
 
 public class Definition {
+    int iD;
     String description;
     int correctNo;
     int appearanceNo;
@@ -11,7 +12,8 @@ public class Definition {
     boolean lastStatus;
     int parent;
 
-    public Definition(String description, int correctNo, int appearanceNo, float percentage, Date lastDate, boolean lastStatus, int parent) {
+    public Definition(int iD, String description, int correctNo, int appearanceNo, float percentage, Date lastDate, boolean lastStatus, int parent) {
+        this.iD = iD;
         this.description = description;
         this.correctNo = correctNo;
         this.appearanceNo = appearanceNo;
@@ -20,6 +22,8 @@ public class Definition {
         this.lastStatus = lastStatus;
         this.parent = parent;
     }
+
+    public int getiD() {return iD;}
 
     public String getDesc() {
         return description;

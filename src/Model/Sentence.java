@@ -3,6 +3,7 @@ package Model;
 import java.util.Date;
 
 public class Sentence {
+    int iD;
     String content;
     int correctNo;
     int appearanceNo;
@@ -11,7 +12,8 @@ public class Sentence {
     boolean lastStatus;
     int parent;
 
-    public Sentence(String content, int correctNo, int appearanceNo, float percentage, Date lastDate, boolean lastStatus, int parent) {
+    public Sentence(int iD, String content, int correctNo, int appearanceNo, float percentage, Date lastDate, boolean lastStatus, int parent) {
+        this.iD = iD;
         this.content = content;
         this.correctNo = correctNo;
         this.appearanceNo = appearanceNo;
@@ -20,6 +22,8 @@ public class Sentence {
         this.lastStatus = lastStatus;
         this.parent = parent;
     }
+
+    public int getiD() {return iD;}
 
     public String getContent() {
         return content;

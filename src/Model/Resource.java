@@ -3,17 +3,21 @@ package Model;
 import java.util.Date;
 
 public class Resource {
+    int iD;
     String name;
     String type;
     int parent;
     Date lastUsed;
 
-    public Resource(String name, String type, int parent, Date lastUsed) {
+    public Resource(int iD, String name, String type, int parent, Date lastUsed) {
+        this.iD = iD;
         this.name = name;
         this.type = type;
         this.parent = parent;
         this.lastUsed = lastUsed;
     }
+
+    public int getiD() {return iD;}
 
     public String getName() {
         return name;
