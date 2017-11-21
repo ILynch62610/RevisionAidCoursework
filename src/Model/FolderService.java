@@ -29,6 +29,7 @@ public class FolderService {
             error.setHeaderText("There seems to have been an error with the database:");
             error.setContentText("Select all error: " + resultsException.getMessage());
         }
+
     }
 
     public static void selectByID() {
