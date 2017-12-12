@@ -1,7 +1,9 @@
 package Views;
 
+import javafx.stage.Stage;
+
 public class ProgressView {
-    public static String getText() {
-        return ("Progress");
+    public static void view(Stage stage) {
+
     }
 }

@@ -1,7 +1,9 @@
 package Views;
 
+import javafx.stage.Stage;
+
 public class LearningSessionView {
-    public static String getText() {
-        return ("Session");
+    public static void view(Stage stage) {
+
     }
 }

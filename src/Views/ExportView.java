@@ -1,7 +1,9 @@
 package Views;
 
+import javafx.stage.Stage;
+
 public class ExportView {
-    public static String getText() {
-        return ("Export Resource");
+    public static void view(Stage stage) {
+
     }
 }

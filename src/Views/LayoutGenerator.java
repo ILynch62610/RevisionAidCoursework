@@ -1,6 +1,7 @@
 package Views;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,12 +9,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 public class LayoutGenerator {
 
-    public static BorderPane make(String title, Node extra) {
+    public static BorderPane make(String title, Boolean timer, Boolean settingsPane) {
         BorderPane root = new BorderPane();
-        AnchorPane topPane = new AnchorPane();
+        HBox topPane = new HBox(20);
         topPane.setPadding(new Insets(5));
         root.setTop(topPane);
 
@@ -23,13 +26,22 @@ public class LayoutGenerator {
         topText.setStyle("-fx-font-family: Impact; -fx-font-size: 30pt; -fx-font-weight: bold;");
 
         topPane.getChildren().add(topText);
-        topPane.setLeftAnchor(topText,20.0);
 
-        if (extra != null) {
-            topPane.getChildren().add(extra);
-            topPane.setRightAnchor(extra, 20.0);
+        if (timer) {
+
         }
 
+        if (settingsPane) {
+            HBox buttons = new HBox(20);
+            HBox.setHgrow(buttons, Priority.ALWAYS);
+            buttons.setAlignment(Pos.CENTER_RIGHT);
+            Image settingsImg = new Image("/images/settings.png",30,30,false,false);
+            Button settingsBtn = new Button();
+            settingsBtn.setGraphic(new ImageView(settingsImg));
+            Button seeProgress = new Button("See Progress");
+            buttons.getChildren().addAll(seeProgress, settingsBtn);
+            topPane.getChildren().add(buttons);
+        }
 
         return root;
 

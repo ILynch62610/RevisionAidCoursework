@@ -10,6 +10,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
@@ -17,11 +19,7 @@ import java.util.List;
 
 public class HomeView {
     public static void view(Stage stage) {
-        Image settingsImg = new Image("/images/settings.png",30,30,false,false);
-        Button settingsBtn = new Button();
-        settingsBtn.setGraphic(new ImageView(settingsImg));
-
-        BorderPane root = LayoutGenerator.make("Welcome ...", settingsBtn);
+        BorderPane root = LayoutGenerator.make("Welcome ...", false, true);
 
         //Allows scrolling
         ScrollPane scrollPane = new ScrollPane();
@@ -36,7 +34,6 @@ public class HomeView {
         tilePane.setHgap(200);
         tilePane.setVgap(100);
         tilePane.setPadding(new Insets(20));
-
 
         //FolderService.selectAll();
 
