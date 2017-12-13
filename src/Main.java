@@ -1,4 +1,5 @@
 //Imports
+import Views.ExportView;
 import Views.HomeView;
 import Views.InnerFolderView;
 import Views.ResourceView;
@@ -15,7 +16,8 @@ public class Main extends Application {
 
         //HomeView.view(new Stage());
         //InnerFolderView.view(new Stage());
-        ResourceView.view(new Stage());
+        //ResourceView.view(new Stage());
+        ExportView.view(new Stage());
 
 
 

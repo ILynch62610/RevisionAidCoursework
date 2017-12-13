@@ -1,5 +1,6 @@
 package Views;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,7 +14,7 @@ public class ResourceView {
         BorderPane root = LayoutGenerator.make(resourceName, false, false);
 
         //Creates Main Pane
-        GridPane basePane = new GridPane();
+        VBox basePane = new VBox();
 
         root.setCenter(basePane);
 
@@ -28,18 +29,44 @@ public class ResourceView {
         Button deleteBtn = new Button();
         deleteBtn.setGraphic(new ImageView("/images/settings.png"));
         options.getChildren().addAll(exportBtn,editBtn,deleteBtn);
-        basePane.add(options,7,0);
+        basePane.getChildren().add(options);
 
         //Creates Session Buttons
         Button learnSBtn = new Button("LEARN");
         Button cardsSBtn = new Button("CARDS");
         Button blanksSBtn = new Button("BLANKS");
         Button quizSBtn = new Button("QUIZ");
-        TilePane sessionBtns = new TilePane();
+        GridPane sessionBtns = new GridPane();
+        ColumnConstraints buf1 = new ColumnConstraints();
+        buf1.setPercentWidth(14);
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(29);
+        col1.setHalignment(HPos.CENTER);
+        ColumnConstraints buf2 = new ColumnConstraints();
+        buf2.setPercentWidth(14);
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setPercentWidth(29);
+        col2.setHalignment(HPos.CENTER);
+        ColumnConstraints buf3 = new ColumnConstraints();
+        buf3.setPercentWidth(14);
+        sessionBtns.getColumnConstraints().addAll(buf1,col1,buf2,col2,buf3);
+        RowConstraints bufr1 = new RowConstraints();
+        bufr1.setPercentHeight(14);
+        RowConstraints row1 = new RowConstraints();
+        row1.setPercentHeight(29);
+        RowConstraints bufr2 = new RowConstraints();
+        bufr2.setPercentHeight(14);
+        RowConstraints row2 = new RowConstraints();
+        row2.setPercentHeight(29);
+        RowConstraints bufr3 = new RowConstraints();
+        bufr3.setPercentHeight(14);
+        sessionBtns.getRowConstraints().addAll(bufr1,row1,bufr2,row2,bufr3);
         sessionBtns.prefWidthProperty().bind(root.widthProperty());
-        sessionBtns.setHgap(200);
-        sessionBtns.setVgap(100);
-        sessionBtns.getChildren().addAll(learnSBtn,cardsSBtn,blanksSBtn,quizSBtn);
+        sessionBtns.add(learnSBtn,1,1);
+        sessionBtns.add(cardsSBtn,3,1);
+        sessionBtns.add(blanksSBtn,1,3);
+        sessionBtns.add(quizSBtn,3,3);
+        basePane.getChildren().add(sessionBtns);
 /*
         basePane.add(learnSBtn,2,2,2,3);
         basePane.add(cardsSBtn,5,2,2,3);
