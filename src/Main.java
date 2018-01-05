@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
 
 
-        //HomeView.view(new Stage());
+        HomeView.view(new Stage());
         //InnerFolderView.view(new Stage());
         //ResourceView.view(new Stage());
         ExportView.view(new Stage());

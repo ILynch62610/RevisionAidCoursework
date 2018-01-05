@@ -15,22 +15,24 @@ import javafx.scene.layout.Priority;
 public class LayoutGenerator {
 
     public static BorderPane make(String title, Boolean timer, Boolean settingsPane) {
+        //Creates root pane and the top panel
         BorderPane root = new BorderPane();
         HBox topPane = new HBox(20);
         topPane.setPadding(new Insets(5));
-        root.setTop(topPane);
+        root.setTop(topPane);       //sets the HBox to be the top panel
 
         //Adding Text and Image to top pane
         Label topText = new Label();
-        topText.setText(title);
+        topText.setText(title);         //will display the text given as an argument
         topText.setStyle("-fx-font-family: Impact; -fx-font-size: 30pt; -fx-font-weight: bold;");
 
-        topPane.getChildren().add(topText);
+        topPane.getChildren().add(topText);         //adds text to the pane
 
         if (timer) {
 
         }
 
+        //if the view needs a settings button, then this section of code will be carried out
         if (settingsPane) {
             HBox buttons = new HBox(20);
             HBox.setHgrow(buttons, Priority.ALWAYS);
