@@ -1,8 +1,5 @@
 //Imports
-import Views.ExportView;
-import Views.HomeView;
-import Views.InnerFolderView;
-import Views.ResourceView;
+import Views.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -14,10 +11,11 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
 
 
-        HomeView.view(new Stage());
+        //HomeView.view(new Stage());
         //InnerFolderView.view(new Stage());
         //ResourceView.view(new Stage());
-        ExportView.view(new Stage());
+        //ExportView.view(new Stage());
+        LearningSessionView.view(new Stage(),"Learn");
 
 
 

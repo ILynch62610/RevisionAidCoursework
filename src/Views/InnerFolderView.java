@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class InnerFolderView {
     public static void view(Stage stage) {
-        BorderPane root = LayoutGenerator.make("Welcome ...", false, true);
+        BorderPane root = LayoutGenerator.make("Welcome ...", true);
 
         //Creates Pane for Table
         StackPane middlePane = new StackPane();

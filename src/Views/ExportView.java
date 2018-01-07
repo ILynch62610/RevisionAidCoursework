@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
 
 public class ExportView {
     public static void view(Stage stage) {
-        BorderPane root = LayoutGenerator.make("Export Resource", false, false);
+        BorderPane root = LayoutGenerator.make("Export Resource", false);
 
         //ZIP Side
         GridPane zipPane = new GridPane();

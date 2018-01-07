@@ -1,20 +1,25 @@
 package Views;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 public class LayoutGenerator {
 
-    public static BorderPane make(String title, Boolean timer, Boolean settingsPane) {
+    public static BorderPane make(String title, Boolean settingsPane) {
         //Creates root pane and the top panel
         BorderPane root = new BorderPane();
         HBox topPane = new HBox(20);
@@ -28,9 +33,6 @@ public class LayoutGenerator {
 
         topPane.getChildren().add(topText);         //adds text to the pane
 
-        if (timer) {
-
-        }
 
         //if the view needs a settings button, then this section of code will be carried out
         if (settingsPane) {

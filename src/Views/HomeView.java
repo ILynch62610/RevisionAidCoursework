@@ -19,7 +19,7 @@ import java.util.List;
 
 public class HomeView {
     public static void view(Stage stage) {
-        BorderPane root = LayoutGenerator.make("Welcome ...", false, true);
+        BorderPane root = LayoutGenerator.make("Welcome ...", true);
 
         //Allows scrolling
         ScrollPane scrollPane = new ScrollPane();

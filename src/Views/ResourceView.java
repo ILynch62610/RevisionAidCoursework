@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class ResourceView {
     public static void view(Stage stage) {
         String resourceName = "Some name";
-        BorderPane root = LayoutGenerator.make(resourceName, false, false);
+        BorderPane root = LayoutGenerator.make(resourceName, false);
 
         //Creates Main Pane
         VBox basePane = new VBox();
