@@ -15,7 +15,8 @@ public class Main extends Application {
         //InnerFolderView.view(new Stage());
         //ResourceView.view(new Stage());
         //ExportView.view(new Stage());
-        LearningSessionView.view(new Stage(),"Learn");
+        LearningSessionView.view(new Stage(),"Blanks");
+        //EditResourceView.view();
 
 
 
