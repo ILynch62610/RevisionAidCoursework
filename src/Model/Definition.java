@@ -1,18 +1,16 @@
 package Model;
 
-import java.util.Date;
-
 public class Definition {
     int iD;
     String description;
     int correctNo;
     int appearanceNo;
     float percentage;
-    Date lastDate;
+    String lastDate;
     boolean lastStatus;
     int parent;
 
-    public Definition(int iD, String description, int correctNo, int appearanceNo, float percentage, Date lastDate, boolean lastStatus, int parent) {
+    public Definition(int iD, String description, int correctNo, int appearanceNo, float percentage, String lastDate, boolean lastStatus, int parent) {
         this.iD = iD;
         this.description = description;
         this.correctNo = correctNo;
@@ -57,11 +55,11 @@ public class Definition {
         this.percentage = (getCorrect() / getAppear())*100;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return lastDate;
     }
 
-    public void setDate(Date lastDate) {
+    public void setDate(String lastDate) {
         this.lastDate = lastDate;
     }
 
@@ -83,6 +81,6 @@ public class Definition {
 
     @Override
     public String toString() {
-        return "Resource{" + description + " / " + parent + "}";
+        return iD + ": " + description;
     }
 }

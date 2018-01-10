@@ -212,7 +212,7 @@ public class LearningSessionView {
             root.setCenter(textPane);
         }
         else{
-            
+
         }
 
         stage.setTitle("Revision Prograammm");
