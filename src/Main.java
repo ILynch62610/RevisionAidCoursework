@@ -15,6 +15,23 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
 
 
+        /*
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        Date testDate = null;
+                        try {
+                            testDate = formatter.parse(results.getString("DateLast"));
+                            System.out.println(results.getString("DateLast")
+                                         + " -> " + testDate.toString()
+                                            + " -> " + formatter.format(testDate));
+
+
+                        }
+                        catch (ParseException parp) {
+                            System.out.print ("Can't convert date: " + parp.getMessage());
+                        }
+         */
+
+
         //HomeView.view(new Stage());
         //InnerFolderView.view(new Stage());
         //ResourceView.view(new Stage());
@@ -29,10 +46,18 @@ public class Main extends Application {
         database = new DatabaseConnection("RevisionAidDatabase.db");
         DefinitionService.selectAll(targetList, database);
 
-        for (Definition d: targetList) {
-            System.out.println(d);
-        }
+        Definition d = DefinitionService.selectById(1, database);
+        System.out.println(d.toString());
+        d.setDesc("testing");
+        DefinitionService.save(d,database);
+        System.out.println(DefinitionService.selectById(1,database).toString());
 
+
+        /*
+        if (d != null) {
+            System.out.println(d.getDesc());
+        }
+        */
 
 
 
