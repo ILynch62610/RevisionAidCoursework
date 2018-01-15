@@ -1,8 +1,7 @@
 //Imports
-import Model.DatabaseConnection;
-import Model.Definition;
-import Model.DefinitionService;
+import Model.*;
 import javafx.application.Application;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -41,16 +40,25 @@ public class Main extends Application {
         //ProgressView.view(new Stage());
         //EditResourceView.viewNotes(new Stage());
         //EditResourceView.viewTermDef(new Stage());
-        ArrayList<Definition> targetList = new ArrayList<Definition>();
+        ArrayList<Sentence> targetList = new ArrayList<Sentence>();
+        ArrayList<Sentence> newList = new ArrayList<Sentence>();
 
         database = new DatabaseConnection("RevisionAidDatabase.db");
-        DefinitionService.selectAll(targetList, database);
+        //SentenceService.selectAll(targetList,database);
+        //System.out.println(targetList);
 
-        Definition d = DefinitionService.selectById(1, database);
-        System.out.println(d.toString());
-        d.setDesc("testing");
-        DefinitionService.save(d,database);
-        System.out.println(DefinitionService.selectById(1,database).toString());
+
+        Sentence s = SentenceService.selectById(10,database);
+        System.out.println(s.toString());
+        SentenceService.delete(10,database);
+        SentenceService.selectAll(targetList,database);
+        System.out.println(targetList);
+        SentenceService.save(s, database);
+        SentenceService.selectAll(newList, database);
+        System.out.println(newList);
+
+
+
 
 
         /*

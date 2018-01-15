@@ -1,6 +1,5 @@
 package Model;
 
-import java.util.Date;
 
 public class Sentence {
     int iD;
@@ -8,11 +7,11 @@ public class Sentence {
     int correctNo;
     int appearanceNo;
     float percentage;
-    Date lastDate;
+    String lastDate;
     boolean lastStatus;
     int parent;
 
-    public Sentence(int iD, String content, int correctNo, int appearanceNo, float percentage, Date lastDate, boolean lastStatus, int parent) {
+    public Sentence(int iD, String content, int correctNo, int appearanceNo, float percentage, String lastDate, boolean lastStatus, int parent) {
         this.iD = iD;
         this.content = content;
         this.correctNo = correctNo;
@@ -57,11 +56,11 @@ public class Sentence {
         this.percentage = (getCorrect() / getAppear())*100;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return lastDate;
     }
 
-    public void setDate(Date lastDate) {
+    public void setDate(String lastDate) {
         this.lastDate = lastDate;
     }
 

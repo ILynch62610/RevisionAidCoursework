@@ -45,4 +45,11 @@ public class Folder {
     public String toString() {
         return "Folder{" + name + " / " + parent + "}";
     }
+
+    public static ArrayList<String> getChildren() {
+        ArrayList<String> children = new ArrayList<>();
+
+
+        return children;
+    }
 }

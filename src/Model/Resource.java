@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Resource {
@@ -7,9 +8,9 @@ public class Resource {
     String name;
     String type;
     int parent;
-    Date lastUsed;
+    String lastUsed;
 
-    public Resource(int iD, String name, String type, int parent, Date lastUsed) {
+    public Resource(int iD, String name, String type, int parent, String lastUsed) {
         this.iD = iD;
         this.name = name;
         this.type = type;
@@ -43,16 +44,21 @@ public class Resource {
         this.parent = parent;
     }
 
-    public Date getLastUsed() {
+    public String getLastUsed() {
         return lastUsed;
     }
 
-    public void setLastUsed(Date lastUsed) {
+    public void setLastUsed(String lastUsed) {
         this.lastUsed = lastUsed;
     }
 
     @Override
     public String toString() {
         return "Resource{" + name + " / " + parent + " / " + lastUsed + "}";
+    }
+
+    public static ArrayList<String> getChildren() {
+        ArrayList<String> children = new ArrayList<>();
+        return children;
     }
 }

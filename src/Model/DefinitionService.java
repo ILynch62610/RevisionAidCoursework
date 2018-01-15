@@ -14,14 +14,7 @@ import java.util.List;
 public class DefinitionService {
     public static void selectAll(List<Definition> targetList, DatabaseConnection database) {
 
-        PreparedStatement statement = database.newStatement(  "SELECT DefinitionID, " +
-                                                                            "Description, " +
-                                                                            "TermID, " +
-                                                                            "CorrectNo, " +
-                                                                            "AppearanceNo, " +
-                                                                            "DateLast, " +
-                                                                            "StatusLast " +
-                                                                                "FROM Definition");
+        PreparedStatement statement = database.newStatement(  "SELECT DefinitionID, Description, TermID, CorrectNo, AppearanceNo, DateLast, StatusLast FROM Definition");
 
         try {
             if (statement != null) {
@@ -29,7 +22,8 @@ public class DefinitionService {
 
                 if (results != null) {
                     while (results.next()) {
-                        targetList.add(new Definition(results.getInt("DefinitionID"),
+                        targetList.add(new Definition(
+                                results.getInt("DefinitionID"),
                                 results.getString("Description"),
                                 results.getInt("CorrectNo"),
                                 results.getInt("AppearanceNo"),
@@ -83,7 +77,7 @@ public class DefinitionService {
         if (itemToSave.getiD() != 0) existingItem = selectById(itemToSave.getiD(), database);
         try {
             if (existingItem == null) {
-                PreparedStatement statement = database.newStatement("INSERT INTO Definition (DefinitionID, Description, TermID, CorrectNo, AppearanceNo, DateLast, StatusLast) VALUES (?, ?, ?, ?, ?, ?, ?))");
+                PreparedStatement statement = database.newStatement("INSERT INTO Definition (DefinitionID, Description, TermID, CorrectNo, AppearanceNo, DateLast, StatusLast) VALUES (?, ?, ?, ?, ?, ?, ?)");
                 statement.setInt(1, itemToSave.getiD());
                 statement.setString(2, itemToSave.getDesc());
                 statement.setInt(3, itemToSave.getParent());
@@ -111,7 +105,16 @@ public class DefinitionService {
 
     }
 
-    public static void delete() {
+    public static void delete(int iD, DatabaseConnection database) {
+        PreparedStatement statement = database.newStatement("DELETE FROM Definition WHERE DefinitionID = ?");
+        try {
+            if (statement != null) {
+                statement.setInt(1, iD);
+                database.executeUpdate(statement);
+            }
+        } catch (SQLException resultsException) {
+            System.out.println("Database deletion error: " + resultsException.getMessage());
+        }
 
     }
 }
