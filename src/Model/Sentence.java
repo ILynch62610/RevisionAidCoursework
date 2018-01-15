@@ -1,6 +1,9 @@
 package Model;
 
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Sentence {
     int iD;
     String content;
@@ -80,13 +83,38 @@ public class Sentence {
         this.parent = parent;
     }
 
-    public String createBlanks() {
-        String withBlanks = "";
-        return withBlanks;
+    public ArrayList<String> createBlanks() {
+        ArrayList<String> blanksAndAnswers = new ArrayList<String>();
+
+        String[] nonBlanks = {"this", "the", "and", "or", "so", "because", "then", "a", "it", "on", "in", "was", "is", "that", "to", "than", "its", "it's", "from", "were", "with", "of", "at", "too", ".", ",", "!","&", "-"};
+        ArrayList<String> nonBlanksList = new ArrayList<String>();
+        for(String s : nonBlanks) {
+            nonBlanksList.add(s);
+        }
+
+        String[] words = this.getContent().split(" ");
+        int noWords = words.length;
+
+        for (int i = 0; i < 2; i++) {
+            Boolean found = false;
+            while (!found) {
+                Random rand = new Random();
+                int pos = rand.nextInt(noWords);
+                if (!nonBlanksList.contains(words[pos].toLowerCase())) {
+                    blanksAndAnswers.add(words[pos]);
+                    words[pos] = "_____";
+                    found = true;
+                }
+            }
+        }
+
+        String withBlanks = String.join(" ",words);
+        blanksAndAnswers.add(withBlanks);
+        return blanksAndAnswers;
     }
 
     @Override
     public String toString() {
-        return "Resource{" + content + " / " + parent + "}";
+        return "Sentence{" + content + " / " + parent + "}";
     }
 }

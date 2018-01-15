@@ -40,22 +40,27 @@ public class Main extends Application {
         //ProgressView.view(new Stage());
         //EditResourceView.viewNotes(new Stage());
         //EditResourceView.viewTermDef(new Stage());
-        ArrayList<Sentence> targetList = new ArrayList<Sentence>();
-        ArrayList<Sentence> newList = new ArrayList<Sentence>();
+        ArrayList<Term> targetList = new ArrayList<Term>();
+        ArrayList<Term> newList = new ArrayList<Term>();
 
         database = new DatabaseConnection("RevisionAidDatabase.db");
-        //SentenceService.selectAll(targetList,database);
+        //TermService.selectAll(targetList,database);
         //System.out.println(targetList);
 
-
-        Sentence s = SentenceService.selectById(10,database);
+/*
+        Term s = TermService.selectById(10,database);
         System.out.println(s.toString());
-        SentenceService.delete(10,database);
-        SentenceService.selectAll(targetList,database);
+        TermService.delete(10,database);
+        TermService.selectAll(targetList,database);
         System.out.println(targetList);
-        SentenceService.save(s, database);
-        SentenceService.selectAll(newList, database);
+        TermService.save(s, database);
+        TermService.selectAll(newList, database);
         System.out.println(newList);
+*/
+
+        //Folder f = FolderService.selectById(1,database);
+        //System.out.println(f.getChildren(database));
+
 
 
 

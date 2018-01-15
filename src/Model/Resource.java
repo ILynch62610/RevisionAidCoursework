@@ -57,8 +57,30 @@ public class Resource {
         return "Resource{" + name + " / " + parent + " / " + lastUsed + "}";
     }
 
-    public static ArrayList<String> getChildren() {
-        ArrayList<String> children = new ArrayList<>();
+    public ArrayList<Term> getTChildren(DatabaseConnection database) {
+        ArrayList<Term> children = new ArrayList<Term>();
+        ArrayList<Term> terms = new ArrayList<Term>();
+
+        TermService.selectAll(terms, database);
+        for (Term t : terms) {
+            if (t.getParent() == this.getiD()) {
+                children.add(t);
+            }
+        }
+
+        return children;
+    }
+    public ArrayList<Sentence> getSChildren(DatabaseConnection database) {
+        ArrayList<Sentence> children = new ArrayList<Sentence>();
+        ArrayList<Sentence> sentences = new ArrayList<Sentence>();
+
+        SentenceService.selectAll(sentences, database);
+        for (Sentence s : sentences) {
+            if (s.getParent() == this.getiD()) {
+                children.add(s);
+            }
+        }
+
         return children;
     }
 }

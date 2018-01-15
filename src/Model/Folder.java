@@ -46,9 +46,28 @@ public class Folder {
         return "Folder{" + name + " / " + parent + "}";
     }
 
-    public static ArrayList<String> getChildren() {
-        ArrayList<String> children = new ArrayList<>();
+    public ArrayList<ArrayList> getChildren(DatabaseConnection database) {
+        ArrayList<Folder> childFolders = new ArrayList<Folder>();
+        ArrayList<Folder> folders = new ArrayList<Folder>();
+        ArrayList<Resource> childResources = new ArrayList<Resource>();
+        ArrayList<Resource> resources = new ArrayList<Resource>();
+        ArrayList<ArrayList> children = new ArrayList<ArrayList>();
 
+        FolderService.selectAll(folders, database);
+        for (Folder f : folders) {
+            if (f.getParent() == this.getiD()) {
+                childFolders.add(f);
+            }
+        }
+        ResourceService.selectAll(resources, database);
+        for (Resource r : resources) {
+            if (r.getParent() == this.getiD()) {
+                childResources.add(r);
+            }
+        }
+
+        children.add(childFolders);
+        children.add(childResources);
 
         return children;
     }
