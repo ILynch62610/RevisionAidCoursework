@@ -1,5 +1,7 @@
 package Views;
 
+import Model.DatabaseConnection;
+import Model.Folder;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -10,10 +12,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
+import java.util.ArrayList;
+
 
 public class ExportView {
-    public static void view(Stage stage) {
-        BorderPane root = LayoutGenerator.make("Export Resource", false);
+    public static Scene view(DatabaseConnection database, ArrayList<Folder> topFolders) {
+        BorderPane root = LayoutGenerator.make("Export Resource", false, false, true, database, topFolders);
+        Scene scene = new Scene(root, 1024, 768);
 
         //ZIP Side
         GridPane zipPane = new GridPane();
@@ -52,10 +57,7 @@ public class ExportView {
         mainPane.add(emailPane,1,0);
         root.setCenter(mainPane);
 
-        Scene scene = new Scene(root, 1024, 768);
 
-        stage.setTitle("Revision Prograammm");
-        stage.setScene(scene);
-        stage.show();
+        return scene;
     }
 }

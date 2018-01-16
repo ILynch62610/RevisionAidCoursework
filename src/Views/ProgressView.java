@@ -1,5 +1,7 @@
 package Views;
 
+import Model.DatabaseConnection;
+import Model.Folder;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,8 +12,10 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class ProgressView {
-    public static void view(Stage stage) {
+    public static Scene view(DatabaseConnection database, ArrayList<Folder> topFolders) {
         int noCorrect = 0;
         int totalNo = 0;
         float pcntCorrect = 0;
@@ -25,7 +29,7 @@ public class ProgressView {
             pcntCorrect = (noCorrect/totalNo)*100;
         }
 
-        BorderPane root = LayoutGenerator.make("PROGRESS", false);
+        BorderPane root = LayoutGenerator.make("PROGRESS", false, false, true, database, topFolders);
         Scene scene = new Scene(root, 1024, 768);
         VBox centrePane = new VBox();
         HBox statsPane = new HBox();
@@ -96,9 +100,6 @@ public class ProgressView {
         centrePane.getChildren().add(tablePane);
 
 
-        stage.setTitle("Revision Prograammm");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+        return scene;
     }
 }

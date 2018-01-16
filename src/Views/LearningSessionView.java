@@ -1,5 +1,9 @@
 package Views;
 
+import Model.DatabaseConnection;
+import Model.Resource;
+import Model.Sentence;
+import Model.Term;
 import javafx.animation.*;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -21,12 +25,19 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
 
 public class LearningSessionView {
-    public static void view(Stage stage, String type) {
+    public static Scene view(Resource resource, String type, DatabaseConnection database) {
+        if(resource.getType()=="TD"){
+            ArrayList<Term> terms = resource.getTChildren(database);
+        }else {
+            ArrayList<Sentence> terms = resource.getSChildren(database);
+        }
+
         int time = 20;
         int correctAns = 5;
         String term = "Hallo";
@@ -56,6 +67,7 @@ public class LearningSessionView {
         timerPane.setAlignment(Pos.CENTER_RIGHT);
 
         Label timerLabel = new Label();
+        timerLabel.setStyle("-fx-font-size: 25px; -fx-font-weight: bold");
 
         IntegerProperty timeSecs = new SimpleIntegerProperty(time);
         timerLabel.textProperty().bind(timeSecs.asString());
@@ -215,9 +227,6 @@ public class LearningSessionView {
 
         }
 
-        stage.setTitle("Revision Prograammm");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+        return scene;
     }
 }

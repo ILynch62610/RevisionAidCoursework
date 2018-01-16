@@ -1,5 +1,7 @@
 package Views;
 
+import Model.DatabaseConnection;
+import Model.Folder;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,9 +10,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class EditResourceView {
-    public static void viewTermDef(Stage stage) {
-        BorderPane root = LayoutGenerator.make("Resouce",false);
+    public static Scene viewTermDef(DatabaseConnection database, ArrayList<Folder> topFolders) {
+        BorderPane root = LayoutGenerator.make("Resouce",false, false, false, database, topFolders);
+        Scene scene = new Scene(root, 1024, 768);
         VBox centrePane = new VBox();
         root.setCenter(centrePane);
 
@@ -77,15 +82,11 @@ public class EditResourceView {
         centrePane.getChildren().add(addNewBtn);
 
 
-
-        Scene scene = new Scene(root, 1024, 768);
-
-        stage.setTitle("Revision Prograammm");
-        stage.setScene(scene);
-        stage.show();
+        return scene;
     }
-    public static void viewNotes(Stage stage) {
-        BorderPane root = LayoutGenerator.make("RESOURCE",false);
+    public static Scene viewNotes(DatabaseConnection database, ArrayList<Folder> topFolders) {
+        BorderPane root = LayoutGenerator.make("RESOURCE",false, false, false, database, topFolders);
+        Scene scene = new Scene(root, 1024, 768);
         GridPane centrePane = new GridPane();
         root.setCenter(centrePane);
 
@@ -116,10 +117,7 @@ public class EditResourceView {
         centrePane.add(byBulletsRad,4,2);
         centrePane.add(byBulletsLbl,5,2);
 
-        Scene scene = new Scene(root, 1024, 768);
+        return scene;
 
-        stage.setTitle("Revision Prograammm");
-        stage.setScene(scene);
-        stage.show();
     }
 }
