@@ -1,5 +1,7 @@
 package Views;
 
+import Controller.InnerFolderController;
+import Controller.Main;
 import Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,13 +19,13 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class InnerFolderView {
-    public static Scene view(Folder folder, DatabaseConnection database, ArrayList<Folder> topFolders) {
-        BorderPane root = LayoutGenerator.make(folder.getName(), true, true, true, database, topFolders);
+    public static Scene view(Folder folder) {
+        BorderPane root = LayoutGenerator.make(folder.getName(), true, true, true);
         Scene scene = new Scene(root, 1024, 768);
 
         //Creates FolderItems for contents of folder
         ObservableList<FolderItem> folderItems = FXCollections.observableArrayList();
-        ArrayList<ArrayList> itemsArray = folder.getChildren(database);
+        ArrayList<ArrayList> itemsArray = folder.getChildren(Main.database);
         ArrayList<Folder> foldersArray = itemsArray.get(0);
         for (int i=0; i<foldersArray.size(); i++) {
             FolderItem fI = new FolderItem(foldersArray.get(i).getName(),"Folder","",foldersArray.get(i).getiD());
@@ -70,14 +72,12 @@ public class InnerFolderView {
                 if(!row.isEmpty() && event.getButton()== MouseButton.PRIMARY && event.getClickCount() == 2){
                     FolderItem clickedItem = row.getItem();
                     if(clickedItem.getType()=="Folder"){
-                        Folder f = FolderService.selectById(clickedItem.getiD(),database);
-                        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-                        stage.setScene(InnerFolderView.view(f, database, topFolders));
+                        Folder f = FolderService.selectById(clickedItem.getiD(),Main.database);
+                        InnerFolderController.changeToInnerFolderView(event,f);
                     }
                     else {
-                        Resource r = ResourceService.selectById(clickedItem.getiD(),database);
-                        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-                        stage.setScene(ResourceView.view(r, database, topFolders));
+                        Resource r = ResourceService.selectById(clickedItem.getiD(),Main.database);
+                        InnerFolderController.changeToResourceView(event,r);
                     }
                 }
             });

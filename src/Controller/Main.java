@@ -1,4 +1,4 @@
-//Imports
+package Controller;//Imports
 import Model.*;
 import Views.EditResourceView;
 import Views.HomeView;
@@ -12,33 +12,33 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 
-//Main Class
+//Controller.Main Class
 public class Main extends Application {
-    public static DatabaseConnection database;
-    @Override
-    public void start(Stage stage) throws Exception {
 
-        DatabaseConnection database = new DatabaseConnection("RevisionAidDatabase.db");
-        ConfigurationService.getConfigurations(database);
+    public static Stage stage;
+    public static DatabaseConnection database;
+    public static ArrayList<Folder> topFolders;
+
+    @Override
+    public void start(Stage initialStage) throws Exception {
+
+        stage = initialStage;
+
+        database = new DatabaseConnection("RevisionAidDatabase.db");
         ArrayList<Folder> folders = new ArrayList<Folder>();
-        ArrayList<Folder> topFolders = new ArrayList<Folder>();
+        topFolders = new ArrayList<Folder>();
         FolderService.selectAll(folders,database);
         for (Folder f : folders) {
             if(f.getParent() == 0) {
                 topFolders.add(f);
             }
         }
-        Scene scene = HomeView.view(database, topFolders);
-
-
-        Configuration configuration = ConfigurationService.getConfigurations(database);
-        System.out.println(configuration.getTimer());
+        Scene scene = HomeView.view();
 
         stage.setTitle("Revision Prograammm");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
-
 
         /*
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

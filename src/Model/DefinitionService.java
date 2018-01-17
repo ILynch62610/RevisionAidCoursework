@@ -34,9 +34,6 @@ public class DefinitionService {
                     }
                 }
             }
-
-
-
         } catch (SQLException resultsException) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Database Error");
@@ -101,8 +98,6 @@ public class DefinitionService {
         } catch (SQLException resultsException) {
             System.out.println("Database saving error: " + resultsException.getMessage());
         }
-
-
     }
 
     public static void delete(int iD, DatabaseConnection database) {

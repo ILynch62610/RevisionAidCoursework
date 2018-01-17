@@ -1,5 +1,6 @@
 package Views;
 
+import Controller.Main;
 import Model.DatabaseConnection;
 import Model.Resource;
 import Model.Sentence;
@@ -31,11 +32,11 @@ import java.util.Stack;
 
 
 public class LearningSessionView {
-    public static Scene view(Resource resource, String type, DatabaseConnection database) {
+    public static Scene view(Resource resource, String type) {
         if(resource.getType()=="TD"){
-            ArrayList<Term> terms = resource.getTChildren(database);
+            ArrayList<Term> terms = resource.getTChildren(Main.database);
         }else {
-            ArrayList<Sentence> terms = resource.getSChildren(database);
+            ArrayList<Sentence> terms = resource.getSChildren(Main.database);
         }
 
         int time = 20;

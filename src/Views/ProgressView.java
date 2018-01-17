@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class ProgressView {
-    public static Scene view(DatabaseConnection database, ArrayList<Folder> topFolders) {
+    public static Scene view() {
         int noCorrect = 0;
         int totalNo = 0;
         float pcntCorrect = 0;
@@ -29,7 +29,7 @@ public class ProgressView {
             pcntCorrect = (noCorrect/totalNo)*100;
         }
 
-        BorderPane root = LayoutGenerator.make("PROGRESS", false, false, true, database, topFolders);
+        BorderPane root = LayoutGenerator.make("PROGRESS", false, false, true);
         Scene scene = new Scene(root, 1024, 768);
         VBox centrePane = new VBox();
         HBox statsPane = new HBox();

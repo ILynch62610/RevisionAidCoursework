@@ -13,8 +13,8 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class EditResourceView {
-    public static Scene viewTermDef(DatabaseConnection database, ArrayList<Folder> topFolders) {
-        BorderPane root = LayoutGenerator.make("Resouce",false, false, false, database, topFolders);
+    public static Scene viewTermDef() {
+        BorderPane root = LayoutGenerator.make("Resouce",false, false, false);
         Scene scene = new Scene(root, 1024, 768);
         VBox centrePane = new VBox();
         root.setCenter(centrePane);
@@ -84,8 +84,8 @@ public class EditResourceView {
 
         return scene;
     }
-    public static Scene viewNotes(DatabaseConnection database, ArrayList<Folder> topFolders) {
-        BorderPane root = LayoutGenerator.make("RESOURCE",false, false, false, database, topFolders);
+    public static Scene viewNotes() {
+        BorderPane root = LayoutGenerator.make("RESOURCE",false, false, false);
         Scene scene = new Scene(root, 1024, 768);
         GridPane centrePane = new GridPane();
         root.setCenter(centrePane);

@@ -2,37 +2,29 @@ package Views;
 
 import Model.DatabaseConnection;
 import Model.Folder;
-import javafx.animation.KeyFrame;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 
 public class LayoutGenerator {
 
-    public static BorderPane make(String title, Boolean settingsPane, Boolean progressPane, Boolean homePane, DatabaseConnection database, ArrayList<Folder> topFolders) {
+    public static Button seeProgress;
+
+    public static BorderPane root;
+
+    public static BorderPane make(String title, Boolean settingsPane, Boolean progressPane, Boolean homePane) {
         //Creates root pane and the top panel
-        BorderPane root = new BorderPane();
+        root = new BorderPane();
         HBox topPane = new HBox(20);
         topPane.setPadding(new Insets(5));
         root.setTop(topPane);       //sets the HBox to be the top panel
@@ -59,22 +51,25 @@ public class LayoutGenerator {
                     @Override
                     public void handle(ActionEvent event) {
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        stage.setScene(HomeView.view(database, topFolders));
+                        stage.setScene(HomeView.view());
                     }
                 });
                 buttons.getChildren().add(homeBtn);
             }
 
             if(progressPane) {
-                Button seeProgress = new Button("See Progress");
+                seeProgress = new Button("See Progress");
                 seeProgress.setStyle("-fx-font-size: 18px");
+
                 seeProgress.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        stage.setScene(ProgressView.view(database, topFolders));
+                        stage.setScene(ProgressView.view());
                     }
                 });
+
+
                 buttons.getChildren().add(seeProgress);
             }
 
@@ -82,7 +77,8 @@ public class LayoutGenerator {
                 Image settingsImg = new Image("/images/settings.png", 30, 30, false, true);
                 Button settingsBtn = new Button();
                 settingsBtn.setGraphic(new ImageView(settingsImg));
-                settingsBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+                /*settingsBtn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         VBox settingsBar = new VBox();
@@ -100,7 +96,11 @@ public class LayoutGenerator {
                            // popUp.hide();
                         }
                     }
-                });
+                });*/
+
+                settingsBtn.setOnAction(ae -> SettingsView.generateSettingsView());
+
+
                 buttons.getChildren().add(settingsBtn);
             }
 

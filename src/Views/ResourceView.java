@@ -1,5 +1,6 @@
 package Views;
 
+import Controller.ResourceController;
 import Model.DatabaseConnection;
 import Model.Folder;
 import Model.Resource;
@@ -18,11 +19,11 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class ResourceView {
-    public static Scene view(Resource resource, DatabaseConnection database, ArrayList<Folder> topFolders) {
-        BorderPane root = LayoutGenerator.make(resource.getName(), false, false, true, database, topFolders);
+    public static Scene view(Resource resource) {
+        BorderPane root = LayoutGenerator.make(resource.getName(), false, false, true);
         Scene scene = new Scene(root, 1024, 768);
 
-        //Creates Main Pane
+        //Creates Controller.Main Pane
         VBox basePane = new VBox();
 
         root.setCenter(basePane);
@@ -42,39 +43,13 @@ public class ResourceView {
 
         //Creates Session Buttons
         Button learnSBtn = new Button("LEARN");
-        learnSBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-                stage.setScene(LearningSessionView.view(resource,"Learn", database));
-            }
-        });
+        learnSBtn.setOnAction(ae -> ResourceController.changeToLearnView(ae,resource));
         Button cardsSBtn = new Button("CARDS");
-        cardsSBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-                stage.setScene(LearningSessionView.view(resource,"Cards", database));
-            }
-        });
+        cardsSBtn.setOnAction(ae -> ResourceController.changeToCardsView(ae, resource));
         Button blanksSBtn = new Button("BLANKS");
-        blanksSBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-                stage.setScene(LearningSessionView.view(resource,"Blanks", database));
-            }
-        });
+        blanksSBtn.setOnAction(ae -> ResourceController.changeToBlanksView(ae, resource));
         Button quizSBtn = new Button("QUIZ");
-        quizSBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("COMING SOON");
-                alert.setHeaderText("This function has not been finished yet but will be coming soon... watch this space!");
-                alert.showAndWait();
-            }
-        });
+        quizSBtn.setOnAction(ae -> ResourceController.changeToQuizView());
         GridPane sessionBtns = new GridPane();
         ColumnConstraints buf1 = new ColumnConstraints();
         buf1.setPercentWidth(14);

@@ -1,31 +1,19 @@
 package Model;
 
 public class Configuration {
-    String timer;
-    String name;
-    String items;
-    String background;
+    String settingName;
+    String settingValue;
 
-    public Configuration(String timer, String name, String items, String background) {
-        this.timer = timer;
-        this.name = name;
-        this.items = items;
-        this.background = background;
+    public Configuration(String settingName, String settingValue) {
+        this.settingName = settingName;
+        this.settingValue = settingValue;
     }
 
-    public String getTimer() {return timer;}
+    public String getSettingName() {return settingName;}
 
-    public void setTimer(String timer) {this.timer = timer;}
+    public void setSettingName(String settingName) {this.settingName = settingName;}
 
-    public String getName() {return name;}
+    public String getSettingValue() {return settingValue;}
 
-    public void setName(String name) {this.name = name;}
-
-    public String getItems() {return items;}
-
-    public void setItems(String items) {this.items = items;}
-
-    public String getBackground() {return background;}
-
-    public void setBackground(String background) {this.background = background;}
+    public void setSettingValue(String settingValue) {this.settingValue = settingValue;}
 }

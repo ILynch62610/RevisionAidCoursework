@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 
 public class ExportView {
-    public static Scene view(DatabaseConnection database, ArrayList<Folder> topFolders) {
-        BorderPane root = LayoutGenerator.make("Export Resource", false, false, true, database, topFolders);
+    public static Scene view() {
+        BorderPane root = LayoutGenerator.make("Export Resource", false, false, true);
         Scene scene = new Scene(root, 1024, 768);
 
         //ZIP Side

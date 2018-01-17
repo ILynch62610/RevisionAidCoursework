@@ -85,11 +85,14 @@ public class TermService {
 
     public static void delete(int iD, DatabaseConnection database) {
         //needs to also delete corresponding answers
-        PreparedStatement statement = database.newStatement("DELETE FROM Term WHERE TermID = ?");
+        PreparedStatement statement2 = database.newStatement("DELETE FROM Definition WHERE TermID = ?");
+        PreparedStatement statement1 = database.newStatement("DELETE FROM Term WHERE TermID = ?");
         try {
-            if (statement != null) {
-                statement.setInt(1, iD);
-                database.executeUpdate(statement);
+            if (statement1 != null && statement2 != null) {
+                statement1.setInt(1, iD);
+                statement2.setInt(1, iD);
+                database.executeUpdate(statement2);
+                database.executeUpdate(statement1);
             }
         } catch (SQLException resultsException) {
             System.out.println("Database deletion error: " + resultsException.getMessage());
