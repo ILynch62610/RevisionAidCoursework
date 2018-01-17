@@ -1,14 +1,20 @@
 package Views;
 
+import Controller.Main;
 import Controller.SettingsController;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+
 
 public class SettingsView {
 
@@ -18,28 +24,28 @@ public class SettingsView {
 
         settingsStage = new Stage(StageStyle.UNDECORATED);
 
-        Pane root = new Pane();
+        HBox root = new HBox();
+        root.setStyle("-fx-background-color: transparent");
+        HBox.setHgrow(root, Priority.ALWAYS);
+        root.setAlignment(Pos.CENTER_RIGHT);
+        root.prefWidthProperty().bind(Main.scene.widthProperty());
+
+        VBox pane = new VBox();
+        pane.setStyle("-fx-background-color: whitesmoke");
+        root.getChildren().add(pane);
+
+
+        Button saveBtn = new Button("Save Settings");
+        pane.getChildren().add(saveBtn);
 
         Scene settingsScene = new Scene(root);
+        settingsScene.setFill(Color.TRANSPARENT);
 
-        Label exampleLabel = new Label("Settings!");
 
-        root.getChildren().add(exampleLabel);
-
-        for (int i = 0; i < 10; i++) {
-
-            Button testButton = new Button("Click me");
-            testButton.setOnAction(ae ->  SettingsController.closeSettings());
-            testButton.setMinWidth(100);
-            testButton.setMinHeight(40);
-            testButton.setLayoutX(0);
-            testButton.setLayoutY(40 + i * 60);
-            root.getChildren().add(testButton);
-
-        }
 
 
         settingsStage.setScene(settingsScene);
+        settingsStage.initStyle(StageStyle.TRANSPARENT);
 
         LayoutGenerator.root.setEffect(new GaussianBlur());
 

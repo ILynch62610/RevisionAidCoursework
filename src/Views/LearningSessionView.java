@@ -1,10 +1,7 @@
 package Views;
 
 import Controller.Main;
-import Model.DatabaseConnection;
-import Model.Resource;
-import Model.Sentence;
-import Model.Term;
+import Model.*;
 import javafx.animation.*;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -39,7 +36,12 @@ public class LearningSessionView {
             ArrayList<Sentence> terms = resource.getSChildren(Main.database);
         }
 
-        int time = 20;
+        for (int i=0; i<Main.configurations.size();i++) {
+            if(Main.configurations.get(i).getSettingName().equals("Timer")) {
+                int studyTime = Integer.parseInt(Main.configurations.get(i).getSettingValue().substring(0,2));
+                int reviseTime = Integer.parseInt(Main.configurations.get(i).getSettingValue().substring(3,5));
+            }
+        }
         int correctAns = 5;
         String term = "Hallo";
         String[] terms = {"Hallo", "Bonjour", "Konnichiwa", "Ni Hau", "Yooo", "Hola", "Hi", "Hey"};

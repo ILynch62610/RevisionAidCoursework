@@ -16,8 +16,10 @@ import java.util.ArrayList;
 public class Main extends Application {
 
     public static Stage stage;
+    public static Scene scene;
     public static DatabaseConnection database;
     public static ArrayList<Folder> topFolders;
+    public static ArrayList<Configuration> configurations;
 
     @Override
     public void start(Stage initialStage) throws Exception {
@@ -27,13 +29,14 @@ public class Main extends Application {
         database = new DatabaseConnection("RevisionAidDatabase.db");
         ArrayList<Folder> folders = new ArrayList<Folder>();
         topFolders = new ArrayList<Folder>();
+        ConfigurationService.getConfigurations(configurations,database);
         FolderService.selectAll(folders,database);
         for (Folder f : folders) {
             if(f.getParent() == 0) {
                 topFolders.add(f);
             }
         }
-        Scene scene = HomeView.view();
+        scene = HomeView.view();
 
         stage.setTitle("Revision Prograammm");
         stage.setScene(scene);

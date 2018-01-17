@@ -1,5 +1,6 @@
 package Views;
 
+import Controller.LayoutController;
 import Model.DatabaseConnection;
 import Model.Folder;
 import javafx.event.ActionEvent;
@@ -47,13 +48,7 @@ public class LayoutGenerator {
                 Button homeBtn = new Button();
                 Image homeImg = new Image("/images/homebutton.png", 30, 30, true, true);
                 homeBtn.setGraphic(new ImageView(homeImg));
-                homeBtn.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        stage.setScene(HomeView.view());
-                    }
-                });
+                homeBtn.setOnAction(ae -> LayoutController.changeToHomeView(ae));
                 buttons.getChildren().add(homeBtn);
             }
 
@@ -61,13 +56,7 @@ public class LayoutGenerator {
                 seeProgress = new Button("See Progress");
                 seeProgress.setStyle("-fx-font-size: 18px");
 
-                seeProgress.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        stage.setScene(ProgressView.view());
-                    }
-                });
+                seeProgress.setOnAction(ae -> LayoutController.changeToProgressView(ae));
 
 
                 buttons.getChildren().add(seeProgress);

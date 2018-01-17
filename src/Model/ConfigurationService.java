@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ConfigurationService {
     public static void getConfigurations(ArrayList<Configuration> settingConfigurations, DatabaseConnection database){
-        PreparedStatement statement = database.newStatement(  "SELECT SettingName, SettingValue FROM Definition");
+        PreparedStatement statement = database.newStatement(  "SELECT SettingName, SettingValue FROM Configuration");
 
         try {
             if (statement != null) {
@@ -19,6 +19,7 @@ public class ConfigurationService {
 
                 if (results != null) {
                     while (results.next()) {
+                        System.out.println("Adding new config"+results.getString("SettingName")+results.getString("SettingValue"));
                         settingConfigurations.add(new Configuration(
                                 results.getString("SettingName"),
                                 results.getString("SettingValue")));
