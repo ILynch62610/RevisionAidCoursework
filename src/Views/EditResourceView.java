@@ -1,5 +1,6 @@
 package Views;
 
+import Controller.LayoutController;
 import Model.DatabaseConnection;
 import Model.Folder;
 import javafx.event.ActionEvent;
@@ -14,9 +15,10 @@ import java.util.ArrayList;
 
 public class EditResourceView {
     public static Scene viewTermDef() {
-        BorderPane root = LayoutGenerator.make("Resouce",false, false, false);
+        BorderPane root = LayoutGenerator.make("Resouce",false, false, false, "Edit");
         Scene scene = new Scene(root, 1024, 768);
         VBox centrePane = new VBox();
+        centrePane.setStyle("-fx-background-color: rgb(" + LayoutController.getRed()+", "+LayoutController.getGreen()+", "+LayoutController.getBlue() + ")");
         root.setCenter(centrePane);
 
         TableView itemsTable = new TableView();
@@ -85,7 +87,7 @@ public class EditResourceView {
         return scene;
     }
     public static Scene viewNotes() {
-        BorderPane root = LayoutGenerator.make("RESOURCE",false, false, false);
+        BorderPane root = LayoutGenerator.make("RESOURCE",false, false, false, "Edit");
         Scene scene = new Scene(root, 1024, 768);
         GridPane centrePane = new GridPane();
         root.setCenter(centrePane);

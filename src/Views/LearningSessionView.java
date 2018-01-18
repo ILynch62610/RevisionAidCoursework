@@ -1,5 +1,6 @@
 package Views;
 
+import Controller.LayoutController;
 import Controller.Main;
 import Model.*;
 import javafx.animation.*;
@@ -36,12 +37,20 @@ public class LearningSessionView {
             ArrayList<Sentence> terms = resource.getSChildren(Main.database);
         }
 
+        int time = 20;
         for (int i=0; i<Main.configurations.size();i++) {
             if(Main.configurations.get(i).getSettingName().equals("Timer")) {
-                int studyTime = Integer.parseInt(Main.configurations.get(i).getSettingValue().substring(0,2));
-                int reviseTime = Integer.parseInt(Main.configurations.get(i).getSettingValue().substring(3,5));
+                int studyTime = Integer.parseInt(Main.configurations.get(i).getSettingValue().substring(0,3));
+                int reviseTime = Integer.parseInt(Main.configurations.get(i).getSettingValue().substring(3,6));
+                if (type=="Learn") {
+                    time = studyTime;
+                }
+                else {
+                    time = reviseTime;
+                }
             }
         }
+
         int correctAns = 5;
         String term = "Hallo";
         String[] terms = {"Hallo", "Bonjour", "Konnichiwa", "Ni Hau", "Yooo", "Hola", "Hi", "Hey"};
@@ -224,6 +233,7 @@ public class LearningSessionView {
             answerPane.setAlignment(Pos.CENTER);
             answerPane.setPadding(new Insets(40,100,200,100));
             root.setBottom(answerPane);
+            textPane.setStyle("-fx-background-color: " + LayoutController.getRed()+","+LayoutController.getGreen()+","+LayoutController.getBlue());
             root.setCenter(textPane);
         }
         else{

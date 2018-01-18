@@ -6,6 +6,7 @@ import Views.LearningSessionView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
@@ -29,7 +30,7 @@ public class Main extends Application {
         database = new DatabaseConnection("RevisionAidDatabase.db");
         ArrayList<Folder> folders = new ArrayList<Folder>();
         topFolders = new ArrayList<Folder>();
-        ConfigurationService.getConfigurations(configurations,database);
+        configurations = ConfigurationService.getConfigurations(database);
         FolderService.selectAll(folders,database);
         for (Folder f : folders) {
             if(f.getParent() == 0) {

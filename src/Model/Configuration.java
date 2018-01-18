@@ -16,4 +16,12 @@ public class Configuration {
     public String getSettingValue() {return settingValue;}
 
     public void setSettingValue(String settingValue) {this.settingValue = settingValue;}
+
+    @Override
+    public String toString() {
+        return "Configuration{" +
+                "settingName='" + settingName + '\'' +
+                ", settingValue='" + settingValue + '\'' +
+                '}';
+    }
 }

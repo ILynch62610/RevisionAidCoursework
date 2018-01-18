@@ -1,5 +1,6 @@
 package Views;
 
+import Controller.LayoutController;
 import Model.DatabaseConnection;
 import Model.Folder;
 import javafx.geometry.Insets;
@@ -29,13 +30,14 @@ public class ProgressView {
             pcntCorrect = (noCorrect/totalNo)*100;
         }
 
-        BorderPane root = LayoutGenerator.make("PROGRESS", false, false, true);
+        BorderPane root = LayoutGenerator.make("PROGRESS", false, false, true, "Progress");
         Scene scene = new Scene(root, 1024, 768);
         VBox centrePane = new VBox();
         HBox statsPane = new HBox();
         statsPane.setSpacing(100);
         statsPane.setPadding(new Insets(40));
         statsPane.setAlignment(Pos.CENTER);
+        centrePane.setStyle("-fx-background-color: " + LayoutController.getRed()+","+LayoutController.getGreen()+","+LayoutController.getBlue());
         root.setCenter(centrePane);
         centrePane.getChildren().add(statsPane);
 

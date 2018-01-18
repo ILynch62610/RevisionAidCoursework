@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigurationService {
-    public static void getConfigurations(ArrayList<Configuration> settingConfigurations, DatabaseConnection database){
+    public static ArrayList<Configuration> getConfigurations(DatabaseConnection database){
+
+        ArrayList<Configuration> configs = new ArrayList<>();
+
         PreparedStatement statement = database.newStatement(  "SELECT SettingName, SettingValue FROM Configuration");
 
         try {
@@ -19,8 +22,7 @@ public class ConfigurationService {
 
                 if (results != null) {
                     while (results.next()) {
-                        System.out.println("Adding new config"+results.getString("SettingName")+results.getString("SettingValue"));
-                        settingConfigurations.add(new Configuration(
+                        configs.add(new Configuration(
                                 results.getString("SettingName"),
                                 results.getString("SettingValue")));
                     }
@@ -32,13 +34,16 @@ public class ConfigurationService {
             error.setHeaderText("There seems to have been an error with the database:");
             error.setContentText("Select all error: " + resultsException.getMessage());
         }
+
+        return configs;
+
     }
     public static void setConfigurations(ArrayList<Configuration> settingConfigurations, DatabaseConnection database) {
         try {
-            for (int i=0;i<settingConfigurations.size();i++) {
+            for (Configuration c: settingConfigurations) {
                 PreparedStatement statement = database.newStatement("UPDATE Configuration SET SettingValue = ? WHERE SettingName = ?");
-                statement.setString(1, settingConfigurations.get(i).getSettingValue());
-                statement.setString(2, settingConfigurations.get(i).getSettingName());
+                statement.setString(1, c.getSettingValue());
+                statement.setString(2, c.getSettingName());
                 database.executeUpdate(statement);
             }
         } catch (SQLException resultsException) {

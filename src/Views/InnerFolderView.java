@@ -1,6 +1,7 @@
 package Views;
 
 import Controller.InnerFolderController;
+import Controller.LayoutController;
 import Controller.Main;
 import Model.*;
 import javafx.collections.FXCollections;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 public class InnerFolderView {
     public static Scene view(Folder folder) {
-        BorderPane root = LayoutGenerator.make(folder.getName(), true, true, true);
+        BorderPane root = LayoutGenerator.make(folder.getName(), true, true, true, "Innerfolder");
         Scene scene = new Scene(root, 1024, 768);
 
         //Creates FolderItems for contents of folder
@@ -40,6 +41,7 @@ public class InnerFolderView {
 
         //Creates Pane for Table
         StackPane middlePane = new StackPane();
+        middlePane.setStyle("-fx-background-color: " + LayoutController.getRed()+","+LayoutController.getGreen()+","+LayoutController.getBlue());
         root.setCenter(middlePane);
 
         //Creates TableView for Folders and Resources List

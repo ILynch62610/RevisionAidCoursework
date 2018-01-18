@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class LayoutGenerator {
 
     public static BorderPane root;
 
-    public static BorderPane make(String title, Boolean settingsPane, Boolean progressPane, Boolean homePane) {
+    public static BorderPane make(String title, Boolean settingsPane, Boolean progressPane, Boolean homePane, String view) {
         //Creates root pane and the top panel
         root = new BorderPane();
         HBox topPane = new HBox(20);
@@ -87,7 +88,7 @@ public class LayoutGenerator {
                     }
                 });*/
 
-                settingsBtn.setOnAction(ae -> SettingsView.generateSettingsView());
+                settingsBtn.setOnAction(ae -> SettingsView.generateSettingsView(view));
 
 
                 buttons.getChildren().add(settingsBtn);

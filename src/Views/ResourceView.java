@@ -1,5 +1,6 @@
 package Views;
 
+import Controller.LayoutController;
 import Controller.ResourceController;
 import Model.DatabaseConnection;
 import Model.Folder;
@@ -20,12 +21,12 @@ import java.util.ArrayList;
 
 public class ResourceView {
     public static Scene view(Resource resource) {
-        BorderPane root = LayoutGenerator.make(resource.getName(), false, false, true);
+        BorderPane root = LayoutGenerator.make(resource.getName(), false, false, true, "Resource");
         Scene scene = new Scene(root, 1024, 768);
 
         //Creates Controller.Main Pane
         VBox basePane = new VBox();
-
+        basePane.setStyle("-fx-background-color: " + LayoutController.getRed()+","+LayoutController.getGreen()+","+LayoutController.getBlue());
         root.setCenter(basePane);
 
         //Creates Options Buttons

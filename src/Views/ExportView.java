@@ -1,5 +1,6 @@
 package Views;
 
+import Controller.LayoutController;
 import Model.DatabaseConnection;
 import Model.Folder;
 import javafx.geometry.HPos;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public class ExportView {
     public static Scene view() {
-        BorderPane root = LayoutGenerator.make("Export Resource", false, false, true);
+        BorderPane root = LayoutGenerator.make("Export Resource", false, false, true, "Export");
         Scene scene = new Scene(root, 1024, 768);
 
         //ZIP Side
@@ -55,6 +56,7 @@ public class ExportView {
         mainPane.getColumnConstraints().addAll(half1,half2);
         mainPane.add(zipPane,0,0);
         mainPane.add(emailPane,1,0);
+        mainPane.setStyle("-fx-background-color: " + LayoutController.getRed()+","+LayoutController.getGreen()+","+LayoutController.getBlue());
         root.setCenter(mainPane);
 
 
