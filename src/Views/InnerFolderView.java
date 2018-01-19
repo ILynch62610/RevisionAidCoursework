@@ -41,7 +41,7 @@ public class InnerFolderView {
 
         //Creates Pane for Table
         StackPane middlePane = new StackPane();
-        middlePane.setStyle("-fx-background-color: " + LayoutController.getRed()+","+LayoutController.getGreen()+","+LayoutController.getBlue());
+        middlePane.setStyle("-fx-background-color: rgb(" + LayoutController.getRed()+", "+LayoutController.getGreen()+", "+LayoutController.getBlue() + ")");
         root.setCenter(middlePane);
 
         //Creates TableView for Folders and Resources List

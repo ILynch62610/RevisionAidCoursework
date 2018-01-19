@@ -37,7 +37,7 @@ public class ProgressView {
         statsPane.setSpacing(100);
         statsPane.setPadding(new Insets(40));
         statsPane.setAlignment(Pos.CENTER);
-        centrePane.setStyle("-fx-background-color: " + LayoutController.getRed()+","+LayoutController.getGreen()+","+LayoutController.getBlue());
+        centrePane.setStyle("-fx-background-color: rgb(" + LayoutController.getRed()+", "+LayoutController.getGreen()+", "+LayoutController.getBlue() + ")");
         root.setCenter(centrePane);
         centrePane.getChildren().add(statsPane);
 

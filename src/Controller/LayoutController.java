@@ -20,19 +20,23 @@ public class LayoutController {
         String background = "220220220";
         for (Configuration c : Main.configurations) {
             if (c.getSettingName().equals("Background")) {
-                System.out.println("FOUND COLOUR: " + c.getSettingValue());
                 background = c.getSettingValue();
             }
         }
         return background;
     }
-    public static String getRed() {
-        return getBackgroundColour().substring(0,3);
-    }
-    public static String getGreen() {
-        return getBackgroundColour().substring(3,6);
-    }
+    public static String getRed() { return getBackgroundColour().substring(0,3); }
+    public static String getGreen() { return getBackgroundColour().substring(3,6); }
     public static String getBlue() {
         return getBackgroundColour().substring(6,9);
+    }
+    public  static String getName() {
+        String name = "User";
+        for (Configuration c : Main.configurations) {
+            if(c.getSettingName().equals("Name")) {
+                name = c.getSettingValue();
+            }
+        }
+        return name;
     }
 }

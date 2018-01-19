@@ -56,7 +56,7 @@ public class ExportView {
         mainPane.getColumnConstraints().addAll(half1,half2);
         mainPane.add(zipPane,0,0);
         mainPane.add(emailPane,1,0);
-        mainPane.setStyle("-fx-background-color: " + LayoutController.getRed()+","+LayoutController.getGreen()+","+LayoutController.getBlue());
+        mainPane.setStyle("-fx-background-color: rgb(" + LayoutController.getRed()+", "+LayoutController.getGreen()+", "+LayoutController.getBlue() + ")");
         root.setCenter(mainPane);
 
 

@@ -26,7 +26,7 @@ public class ResourceView {
 
         //Creates Controller.Main Pane
         VBox basePane = new VBox();
-        basePane.setStyle("-fx-background-color: " + LayoutController.getRed()+","+LayoutController.getGreen()+","+LayoutController.getBlue());
+        basePane.setStyle("-fx-background-color: rgb(" + LayoutController.getRed()+", "+LayoutController.getGreen()+", "+LayoutController.getBlue() + ")");
         root.setCenter(basePane);
 
         //Creates Options Buttons

@@ -4,9 +4,7 @@ import Controller.Main;
 import Controller.SettingsController;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -14,6 +12,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -78,8 +77,79 @@ public class SettingsView {
             });
             pane.getChildren().add(backgroundBtn);
             Button nameBtn = new Button("Name");
+            nameBtn.setOnAction(ae -> {
+                pane.getChildren().clear();
+                pane.getChildren().add(rect);
+                Label nameLbl = new Label("Name");
+                nameLbl.setFont(Font.font("Arial", FontWeight.BOLD,30));
+                Label textFieldLbl = new Label("Enter Name below:");
+                TextField nameField = new TextField();
+                Button confirmBtn = new Button("Confirm");
+                confirmBtn.setOnAction(confirmAE -> {
+                    SettingsController.saveName(nameField.getText());
+                });
+                pane.getChildren().add(nameLbl);
+                pane.getChildren().add(textFieldLbl);
+                pane.getChildren().add(nameField);
+                pane.getChildren().add(confirmBtn);
+            });
             pane.getChildren().add(nameBtn);
             Button timerBtn = new Button("Timer");
+            timerBtn.setOnAction(ae -> {
+                pane.getChildren().clear();
+                pane.getChildren().add(rect);
+                Label timerLbl = new Label("Timer");
+                timerLbl.setFont(Font.font("Arial", FontWeight.BOLD,30));
+                Label timerText = new Label("The timer is used in your learning sessions.");
+                timerText.setWrapText(true);
+
+                Label learningLbl = new Label("Learning Sessions");
+                ToggleGroup learningTimerGrp = new ToggleGroup();
+                Label onLbl = new Label("On");
+                RadioButton learningTimerOn = new RadioButton();
+                learningTimerOn.setSelected(true);
+                learningTimerOn.setToggleGroup(learningTimerGrp);
+                Label offLbl = new Label("Off");
+                RadioButton learningTimerOff = new RadioButton();
+                learningTimerOff.setSelected(false);
+                learningTimerOff.setToggleGroup(learningTimerGrp);
+
+                Label perItemLbl = new Label("Time per Item");
+                TextField learningField = new TextField();
+
+                Label studyLbl = new Label("Study Sessions");
+                ToggleGroup studyTimerGrp = new ToggleGroup();
+                RadioButton studyTimerOn = new RadioButton();
+                studyTimerOn.setSelected(true);
+                studyTimerOn.setToggleGroup(studyTimerGrp);
+                RadioButton studyTimerOff = new RadioButton();
+                studyTimerOff.setSelected(false);
+                studyTimerOff.setToggleGroup(studyTimerGrp);
+
+                TextField studyField = new TextField();
+
+                Button confirmBtn = new Button("Confirm");
+                confirmBtn.setOnAction(confirmAE -> {
+                    SettingsController.saveTimers(learningTimerOn.isSelected(),learningField.getText(),studyTimerOn.isSelected(), studyField.getText());
+                });
+                pane.getChildren().add(timerLbl);
+                pane.getChildren().add(timerText);
+                pane.getChildren().add(learningLbl);
+                pane.getChildren().add(onLbl);
+                pane.getChildren().add(learningTimerOn);
+                pane.getChildren().add(offLbl);
+                pane.getChildren().add(learningTimerOff);
+                pane.getChildren().add(perItemLbl);
+                pane.getChildren().add(learningField);
+                pane.getChildren().add(studyLbl);
+                pane.getChildren().add(onLbl);
+                pane.getChildren().add(studyTimerOn);
+                pane.getChildren().add(offLbl);
+                pane.getChildren().add(studyTimerOff);
+                pane.getChildren().add(perItemLbl);
+                pane.getChildren().add(studyField);
+                pane.getChildren().add(confirmBtn);
+            });
             pane.getChildren().add(timerBtn);
             Button itemBtn = new Button("Items");
             pane.getChildren().add(itemBtn);
@@ -107,6 +177,7 @@ public class SettingsView {
         }
 
         Button saveBtn = new Button("Save Settings");
+        saveBtn.setOnAction(ae -> SettingsController.saveAndClose());
         pane.getChildren().add(saveBtn);
 
         Scene settingsScene = new Scene(root);

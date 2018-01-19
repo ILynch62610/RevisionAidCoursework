@@ -180,6 +180,7 @@ public class LearningSessionView {
                 termBox.setHeight(140);
                 Text termText = new Text(term);
                 keyPane.getChildren().addAll(termBox, termText);
+
                 for(int i=0;i<8;i++){
                     Rectangle rect = new Rectangle();
                     rect.setFill(Color.LAVENDER);
@@ -233,7 +234,7 @@ public class LearningSessionView {
             answerPane.setAlignment(Pos.CENTER);
             answerPane.setPadding(new Insets(40,100,200,100));
             root.setBottom(answerPane);
-            textPane.setStyle("-fx-background-color: " + LayoutController.getRed()+","+LayoutController.getGreen()+","+LayoutController.getBlue());
+            textPane.setStyle("-fx-background-color: rgb(" + LayoutController.getRed()+", "+LayoutController.getGreen()+", "+LayoutController.getBlue() + ")");
             root.setCenter(textPane);
         }
         else{

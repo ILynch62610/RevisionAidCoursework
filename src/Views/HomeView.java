@@ -3,6 +3,7 @@ package Views;
 import Controller.HomeController;
 import Controller.LayoutController;
 import Controller.Main;
+import Model.Configuration;
 import Model.DatabaseConnection;
 import Model.Folder;
 import Model.FolderService;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class HomeView {
     public static Scene view() {
-        BorderPane root = LayoutGenerator.make("Welcome ...", true, true, false, "Home");
+        BorderPane root = LayoutGenerator.make("Welcome "+LayoutController.getName(), true, true, false, "Home");
         Scene scene = new Scene(root, 1024, 768);
 
         //Allows scrolling
@@ -35,7 +36,6 @@ public class HomeView {
         scrollPane.setFitToWidth(true);
 
         String colour = "rgb(" + LayoutController.getRed()+", "+LayoutController.getGreen()+", "+LayoutController.getBlue() + ")";
-        System.out.println(colour);
         root.setCenter(scrollPane);
 
         //Creates TilePane (for folder view)
