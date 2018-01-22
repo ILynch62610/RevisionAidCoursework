@@ -1,6 +1,7 @@
 package Views;
 
 import Controller.LayoutController;
+import Controller.LearningSession;
 import Controller.Main;
 import Model.*;
 import javafx.animation.*;
@@ -28,9 +29,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
+import static Controller.LearningSession.sessionTerms;
+
 
 public class LearningSessionView {
-    public static Scene view(Resource resource, String type) {
+    public static Scene view(Resource resource, String type, int correctAns) {
         if(resource.getType()=="TD"){
             ArrayList<Term> terms = resource.getTChildren(Main.database);
         }else {
@@ -51,11 +54,15 @@ public class LearningSessionView {
             }
         }
 
-        int correctAns = 5;
-        String term = "Hallo";
-        String[] terms = {"Hallo", "Bonjour", "Konnichiwa", "Ni Hau", "Yooo", "Hola", "Hi", "Hey"};
-        String definition = "Hello";
-        String[] definitions = {"Hello", "Sup", "Def 3", "Def 4", "Def 5", "Def 6", "Def 7", "Def 8"};
+        Random rand = new Random();
+        String term = sessionTerms.get(0).getContent();
+        String definition = sessionTerms.get(0).getAnswers(Main.database).get(rand.nextInt(sessionTerms.get(0).getAnswers(Main.database).size())).getDesc();
+        ArrayList<Definition> definitions = new ArrayList<>();
+        for (Term t  : resource.getTChildren(Main.database)) {
+            for (int i=0;i<t.getAnswers(Main.database).size();i++){
+                definitions.add(t.getAnswers(Main.database).get(i));
+            }
+        }
         String blanksSentence = "On May 27, 97 men from the Royal Norfolk Regiment ran out of ammunition and surrendered at the village of Le Paradis.";
         int blanksNo = 2;
 
@@ -130,21 +137,19 @@ public class LearningSessionView {
                 Boolean foundDef = false;
                 Boolean foundTerm = false;
                 do {
-                    Random rand = new Random();
-                    int n = rand.nextInt(12);
+                    int n = rand.nextInt(sessionTerms.size());
                     if(spaces[n]!=0) {
                         foundDef = true;
                         spaces[n] = 0;
-                        spaceFills[n] = definition;
+                        spaceFills[n] = sessionTerms.get(i).getAnswers(Main.database).get(rand.nextInt(sessionTerms.get(0).getAnswers(Main.database).size())).getDesc();
                     }
                 }while(!foundDef);
                 do {
-                    Random rand = new Random();
-                    int n = rand.nextInt(12);
+                    int n = rand.nextInt(sessionTerms.size());
                     if(spaces[n]!=0) {
                         foundTerm = true;
                         spaces[n] = 0;
-                        spaceFills[n] = term;
+                        spaceFills[n] = sessionTerms.get(i).getContent();
                     }
                 }while(!foundTerm);
             }
@@ -161,7 +166,6 @@ public class LearningSessionView {
             root.setCenter(learningPane);
         }
         else if(type.equals("Cards")){
-            Random rand = new Random();
             int choice = rand.nextInt(2);
             VBox centerPane  = new VBox();
             centerPane.setPadding(new Insets(70));
@@ -186,7 +190,7 @@ public class LearningSessionView {
                     rect.setFill(Color.LAVENDER);
                     rect.setWidth(155);
                     rect.setHeight(100);
-                    Text text = new Text(definitions[i]);
+                    Text text = new Text(definitions.get(i).getDesc());
                     StackPane stack = new StackPane();
                     stack.getChildren().addAll(rect, text);
                     cardsPane.getChildren().add(stack);
@@ -204,7 +208,7 @@ public class LearningSessionView {
                     rect.setFill(Color.LAVENDER);
                     rect.setWidth(155);
                     rect.setHeight(100);
-                    Text text = new Text(terms[i]);
+                    Text text = new Text(resource.getTChildren(Main.database).get(i).getContent());
                     StackPane stack = new StackPane();
                     stack.getChildren().addAll(rect, text);
                     cardsPane.getChildren().add(stack);

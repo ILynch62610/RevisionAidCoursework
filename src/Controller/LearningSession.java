@@ -21,6 +21,9 @@ import java.util.Random;
 
 
 public class LearningSession {
+
+    public static ArrayList<Term> sessionTerms;
+
     public static int getItemsPerSessionConfig(String type) {
         int learnItems = 5;
         int studyItems = 15;
@@ -44,13 +47,15 @@ public class LearningSession {
         }
     }
     public static void learn(Resource r, ActionEvent ae) {
+        int correctAns = 0;
         if (r.getType().equals("TD")){
             ArrayList<Term> resourceTerms = r.getTChildren(Main.database);
-            ArrayList<Term> sessionTerms = new ArrayList<>();
+            System.out.println(resourceTerms);
+            sessionTerms = new ArrayList<>();
             int learnItems = getItemsPerSessionConfig("Learn");
             for (int i=0; i<Math.round(learnItems/4);i++) {
                 Random rand = new Random();
-                int n = rand.nextInt();
+                int n = rand.nextInt(resourceTerms.size());
                 sessionTerms.add(resourceTerms.get(n));
                 resourceTerms.remove(n);
             }
@@ -90,7 +95,7 @@ public class LearningSession {
                 Random rand = new Random();
                 Boolean found = false;
                 while (found == false){
-                    int n = rand.nextInt();
+                    int n = rand.nextInt(resourceTerms.size());
                     if (resourceTerms.get(n).getAnswers(Main.database).get(0).getStatus() == false) {
                         sessionTerms.add(resourceTerms.get(n));
                         resourceTerms.remove(n);
@@ -103,8 +108,10 @@ public class LearningSession {
             }
 
 
-            Stage stage = (Stage) ((Node)ae.getSource()).getScene().getWindow();
-            stage.setScene(LearningSessionView.view(r,"Learn"));
+            while(sessionTerms.size()>0) {
+                Stage stage = (Stage) ((Node) ae.getSource()).getScene().getWindow();
+                stage.setScene(LearningSessionView.view(r, "Learn", correctAns));
+            }
         }
         else if(r.getType().equals("NS")) {
 
