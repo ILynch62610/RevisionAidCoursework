@@ -10,16 +10,13 @@ import javafx.stage.Stage;
 
 public class ResourceController {
     public static void changeToLearnView(ActionEvent ae, Resource r){
-        Stage stage = (Stage) ((Node)ae.getSource()).getScene().getWindow();
-        stage.setScene(LearningSessionView.view(r,"Learn"));
+        LearningSession.learn(r, ae);
     }
     public static void changeToCardsView(ActionEvent ae, Resource r){
-        Stage stage = (Stage) ((Node)ae.getSource()).getScene().getWindow();
-        stage.setScene(LearningSessionView.view(r,"Cards"));
+        LearningSession.cards(r, ae);
     }
     public static void changeToBlanksView(ActionEvent ae, Resource r){
-        Stage stage = (Stage) ((Node)ae.getSource()).getScene().getWindow();
-        stage.setScene(LearningSessionView.view(r,"Blanks"));
+        LearningSession.blanks(r, ae);
     }
     public static void changeToQuizView(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
