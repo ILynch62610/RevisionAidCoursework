@@ -53,13 +53,24 @@ public class LearningSession {
             System.out.println(resourceTerms);
             sessionTerms = new ArrayList<>();
             int learnItems = getItemsPerSessionConfig("Learn");
-            for (int i=0; i<Math.round(learnItems/4);i++) {
+
+            int noOfRandomPicks = Math.round(learnItems/4);
+            int noOfOlderPicks = Math.round(learnItems/3);
+            int noOfLowPercentage = Math.round(learnItems/4);
+            int noOfRecentlyWrong = Math.round(learnItems/6);
+
+            System.out.println("R:" + noOfRandomPicks+ "\tO:" +noOfOlderPicks+ "\tL:" + noOfLowPercentage+ "\tW:" + noOfRecentlyWrong);
+
+            System.out.println("Picking randoms...");
+            for (int i=0; i<noOfRandomPicks;i++) {
                 Random rand = new Random();
                 int n = rand.nextInt(resourceTerms.size());
                 sessionTerms.add(resourceTerms.get(n));
                 resourceTerms.remove(n);
             }
-            for (int i=0; i<Math.round(learnItems/3);i++) {
+
+            System.out.println("Picking olds...");
+            for (int i=0; i<noOfOlderPicks;i++) {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 Term leastRecent = resourceTerms.get(0);
                 Date earliestDate = Calendar.getInstance().getTime();
@@ -79,7 +90,9 @@ public class LearningSession {
                 sessionTerms.add(leastRecent);
                 resourceTerms.remove(leastRecent);
             }
-            for (int i=0; i<Math.round(learnItems/4);i++){
+
+            System.out.println("Picking percentage ones...");
+            for (int i=0; i<noOfLowPercentage;i++){
                 float lowest = 100;
                 Term lowestTerm = resourceTerms.get(0);
                 for (Term t : resourceTerms) {
@@ -91,7 +104,9 @@ public class LearningSession {
                 sessionTerms.add(lowestTerm);
                 resourceTerms.remove(lowestTerm);
             }
-            for (int i=0; i<Math.round(learnItems/6);i++){
+
+            System.out.println("Picking wrongs...");
+            for (int i=0; i<noOfRecentlyWrong;i++){
                 Random rand = new Random();
                 Boolean found = false;
                 while (found == false){
@@ -102,11 +117,18 @@ public class LearningSession {
                         found = true;
                     }
                 }
+
+
+
             }
+
+            System.out.println("Remove items...");
+
             while(sessionTerms.size() > learnItems) {
                 sessionTerms.remove(-1);
             }
 
+            System.out.println("Show scenes...");
 
             while(sessionTerms.size()>0) {
                 Stage stage = (Stage) ((Node) ae.getSource()).getScene().getWindow();
