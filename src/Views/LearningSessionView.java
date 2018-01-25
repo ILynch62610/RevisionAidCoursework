@@ -2,6 +2,7 @@ package Views;
 
 import Controller.LayoutController;
 import Controller.LearningSession;
+import Controller.LearningSessionController;
 import Controller.Main;
 import Model.*;
 import javafx.animation.*;
@@ -96,6 +97,7 @@ public class LearningSessionView {
                 new KeyFrame(Duration.seconds(time+1),
                         new KeyValue(timeSecs, 0)));
         timeline.playFromStart();
+        timeline.setOnFinished(ae -> LearningSessionController.outOfTime());
 
         timerPane.getChildren().add(timerLabel);
 
@@ -133,19 +135,23 @@ public class LearningSessionView {
 
             int[] spaces = {1,2,3,4,5,6,7,8,9,10,11,12};
             String[] spaceFills = new String[12];
-            for(int i=0;i<6;i++){
+            for(int i=0;i<sessionTerms.size();i++){
                 Boolean foundDef = false;
                 Boolean foundTerm = false;
                 do {
-                    int n = rand.nextInt(sessionTerms.size());
+                    int n = rand.nextInt(sessionTerms.size()*2);
                     if(spaces[n]!=0) {
                         foundDef = true;
                         spaces[n] = 0;
-                        spaceFills[n] = sessionTerms.get(i).getAnswers(Main.database).get(rand.nextInt(sessionTerms.get(0).getAnswers(Main.database).size())).getDesc();
+                        if (sessionTerms.get(i).getAnswers(Main.database).size() > 0) {
+                            spaceFills[n] = sessionTerms.get(i).getAnswers(Main.database).get(rand.nextInt(sessionTerms.get(i).getAnswers(Main.database).size())).getDesc();
+                        } else {
+                            spaceFills[n] = sessionTerms.get(i).getAnswers(Main.database).get(0).getDesc();
+                        }
                     }
                 }while(!foundDef);
                 do {
-                    int n = rand.nextInt(sessionTerms.size());
+                    int n = rand.nextInt(sessionTerms.size()*2);
                     if(spaces[n]!=0) {
                         foundTerm = true;
                         spaces[n] = 0;
@@ -153,12 +159,14 @@ public class LearningSessionView {
                     }
                 }while(!foundTerm);
             }
-            for(int i=0;i<12;i++){
+            for(int i=0;i<sessionTerms.size()*2;i++){
                 Rectangle rect = new Rectangle();
                 rect.setFill(Color.CORAL);
                 rect.setHeight(100);
                 rect.setWidth(150);
                 Text text = new Text(spaceFills[i]);
+                text.setWrappingWidth(130);
+                text.setTextAlignment(TextAlignment.CENTER);
                 StackPane stack = new StackPane();
                 stack.getChildren().addAll(rect, text);
                 learningPane.getChildren().add(stack);

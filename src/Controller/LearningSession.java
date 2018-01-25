@@ -46,22 +46,18 @@ public class LearningSession {
             return studyItems;
         }
     }
-    public static void learn(Resource r, ActionEvent ae) {
-        int correctAns = 0;
+    public static void getSessionItems(Resource r) {
         if (r.getType().equals("TD")){
             ArrayList<Term> resourceTerms = r.getTChildren(Main.database);
-            System.out.println(resourceTerms);
             sessionTerms = new ArrayList<>();
             int learnItems = getItemsPerSessionConfig("Learn");
 
+            int resourceSize = resourceTerms.size();
             int noOfRandomPicks = Math.round(learnItems/4);
             int noOfOlderPicks = Math.round(learnItems/3);
             int noOfLowPercentage = Math.round(learnItems/4);
             int noOfRecentlyWrong = Math.round(learnItems/6);
 
-            System.out.println("R:" + noOfRandomPicks+ "\tO:" +noOfOlderPicks+ "\tL:" + noOfLowPercentage+ "\tW:" + noOfRecentlyWrong);
-
-            System.out.println("Picking randoms...");
             for (int i=0; i<noOfRandomPicks;i++) {
                 Random rand = new Random();
                 int n = rand.nextInt(resourceTerms.size());
@@ -69,7 +65,6 @@ public class LearningSession {
                 resourceTerms.remove(n);
             }
 
-            System.out.println("Picking olds...");
             for (int i=0; i<noOfOlderPicks;i++) {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 Term leastRecent = resourceTerms.get(0);
@@ -91,7 +86,6 @@ public class LearningSession {
                 resourceTerms.remove(leastRecent);
             }
 
-            System.out.println("Picking percentage ones...");
             for (int i=0; i<noOfLowPercentage;i++){
                 float lowest = 100;
                 Term lowestTerm = resourceTerms.get(0);
@@ -105,7 +99,6 @@ public class LearningSession {
                 resourceTerms.remove(lowestTerm);
             }
 
-            System.out.println("Picking wrongs...");
             for (int i=0; i<noOfRecentlyWrong;i++){
                 Random rand = new Random();
                 Boolean found = false;
@@ -118,22 +111,18 @@ public class LearningSession {
                     }
                 }
 
-
-
             }
-
-            System.out.println("Remove items...");
 
             while(sessionTerms.size() > learnItems) {
                 sessionTerms.remove(-1);
             }
-
-            System.out.println("Show scenes...");
-
-            while(sessionTerms.size()>0) {
-                Stage stage = (Stage) ((Node) ae.getSource()).getScene().getWindow();
-                stage.setScene(LearningSessionView.view(r, "Learn", correctAns));
+            while(sessionTerms.size() < learnItems && sessionTerms.size() < resourceSize) {
+                Random rand = new Random();
+                int n = rand.nextInt(resourceTerms.size());
+                sessionTerms.add(resourceTerms.get(n));
+                resourceTerms.remove(n);
             }
+
         }
         else if(r.getType().equals("NS")) {
 
@@ -145,10 +134,35 @@ public class LearningSession {
             alert.showAndWait();
         }
     }
-    public static void cards(Resource r, ActionEvent ae) {
+
+
+    public static void learn(Resource r) {
+        if(r.getType().equals("NS")){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Resource Error");
+            alert.setHeaderText("Sorry, you cannot use this study session for this type of resource. Please choose another type of session.");
+            alert.showAndWait();
+        }
+        else {
+            int correctAns = 0;
+            getSessionItems(r);
+            Main.stage.setScene(LearningSessionView.view(r, "Learn", correctAns));
+        }
+    }
+    public static void cards(Resource r) {
 
     }
-    public static void blanks(Resource r, ActionEvent ae) {
-
+    public static void blanks(Resource r) {
+        if(r.getType().equals("TD")){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Resource Error");
+            alert.setHeaderText("Sorry, you cannot use this study session for this type of resource. Please choose another type of session.");
+            alert.showAndWait();
+        }
+        else {
+            int correctAns = 0;
+            //change this getSessionItems(r);
+            Main.stage.setScene(LearningSessionView.view(r, "Blanks", correctAns));
+        }
     }
 }
