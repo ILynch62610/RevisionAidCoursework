@@ -1,5 +1,10 @@
 package Model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Definition {
     int iD;
     String description;
@@ -11,6 +16,7 @@ public class Definition {
     int parent;
 
     public Definition(int iD, String description, int correctNo, int appearanceNo, float percentage, String lastDate, boolean lastStatus, int parent) {
+        checkDate();
         this.iD = iD;
         this.description = description;
         this.correctNo = correctNo;
@@ -60,6 +66,7 @@ public class Definition {
     }
 
     public void setDate(String lastDate) {
+        checkDate();
         this.lastDate = lastDate;
     }
 
@@ -77,6 +84,22 @@ public class Definition {
 
     public void setParent(int parent) {
         this.parent = parent;
+    }
+
+    private void checkDate() {
+        if(lastDate != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date today = Calendar.getInstance().getTime();
+            Date date = null;
+            try {
+                date = formatter.parse(lastDate);
+                if (date.after(today)) {
+                    lastDate = today.toString();
+                }
+            } catch (ParseException parp) {
+                System.out.print("Can't convert date: " + parp.getMessage());
+            }
+        }
     }
 
     @Override

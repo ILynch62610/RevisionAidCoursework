@@ -30,15 +30,38 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
+import static Controller.LearningSession.getSessionItems;
 import static Controller.LearningSession.sessionTerms;
+import static Controller.LearningSession.sessionSentences;
 
 
 public class LearningSessionView {
     public static Scene view(Resource resource, String type, int correctAns) {
+        Random rand = new Random();
+        ArrayList<Term> terms = new ArrayList<>();
+        String term = "";
+        ArrayList<Definition> definitions = new ArrayList<>();
+        String definition = "";
+        ArrayList<Sentence> sentences = new ArrayList<>();
+        String sentenceWithBlanks = "";
+        String blank1 = "";
+        String blank2 = "";
+
         if(resource.getType()=="TD"){
-            ArrayList<Term> terms = resource.getTChildren(Main.database);
+            terms = resource.getTChildren(Main.database);
+            term = sessionTerms.get(0).getContent();
+            definition = sessionTerms.get(0).getAnswers(Main.database).get(rand.nextInt(sessionTerms.get(0).getAnswers(Main.database).size())).getDesc();
+            for (Term t  : resource.getTChildren(Main.database)) {
+                for (int i=0;i<t.getAnswers(Main.database).size();i++){
+                    definitions.add(t.getAnswers(Main.database).get(i));
+                }
+            }
         }else {
-            ArrayList<Sentence> terms = resource.getSChildren(Main.database);
+            sentences = resource.getSChildren(Main.database);
+            ArrayList<String> blanks = sessionSentences.get(0).createBlanks();
+            sentenceWithBlanks = blanks.get(2);
+            blank1 = blanks.get(0);
+            blank2 = blanks.get(1);
         }
 
         int time = 20;
@@ -55,17 +78,6 @@ public class LearningSessionView {
             }
         }
 
-        Random rand = new Random();
-        String term = sessionTerms.get(0).getContent();
-        String definition = sessionTerms.get(0).getAnswers(Main.database).get(rand.nextInt(sessionTerms.get(0).getAnswers(Main.database).size())).getDesc();
-        ArrayList<Definition> definitions = new ArrayList<>();
-        for (Term t  : resource.getTChildren(Main.database)) {
-            for (int i=0;i<t.getAnswers(Main.database).size();i++){
-                definitions.add(t.getAnswers(Main.database).get(i));
-            }
-        }
-        String blanksSentence = "On May 27, 97 men from the Royal Norfolk Regiment ran out of ammunition and surrendered at the village of Le Paradis.";
-        int blanksNo = 2;
 
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root, 1024, 768);
@@ -229,7 +241,7 @@ public class LearningSessionView {
             textBox.setWidth(500);
             textPane.setPadding(new Insets(150,150,100,150));
             GridPane answerPane = new GridPane();
-            Text text = new Text(blanksSentence);
+            Text text = new Text(sentenceWithBlanks);
             text.setTextAlignment(TextAlignment.CENTER);
             text.setFont(Font.font("Berlin Sans FB", 35));
             text.wrappingWidthProperty().bind(textBox.widthProperty());
@@ -239,7 +251,7 @@ public class LearningSessionView {
             answerBox.setFont(Font.font("Arial", 30));
             Button goBtn = new Button("GO");
             goBtn.setFont(Font.font("Arial",30));
-            Label blanksLabel = new Label("Blank " + blanksNo);
+            Label blanksLabel = new Label("Blank " /*+ blanksNo*/);
             answerPane.add(blanksLabel,0,0,2,1);
             answerPane.add(answerBox,0,1);
             answerPane.add(goBtn,1,1);

@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Configuration;
-import Model.ConfigurationService;
-import Model.Resource;
-import Model.Term;
+import Model.*;
 import Views.InnerFolderView;
 import Views.LearningSessionView;
 import javafx.event.ActionEvent;
@@ -23,6 +20,7 @@ import java.util.Random;
 public class LearningSession {
 
     public static ArrayList<Term> sessionTerms;
+    public static ArrayList<Sentence> sessionSentences;
 
     public static int getItemsPerSessionConfig(String type) {
         int learnItems = 5;
@@ -125,7 +123,94 @@ public class LearningSession {
 
         }
         else if(r.getType().equals("NS")) {
+            ArrayList<Sentence> resourceSentences = r.getSChildren(Main.database);
+            sessionSentences = new ArrayList<>();
+            int studyItems = getItemsPerSessionConfig("Study");
 
+            int resourceSize = resourceSentences.size();
+            int noOfRandomPicks;
+            int noOfOlderPicks;
+            int noOfLowPercentage;
+            int noOfRecentlyWrong;
+            if(resourceSize < studyItems) {
+                noOfRandomPicks = Math.round(studyItems / 4/resourceSize);
+                noOfOlderPicks = Math.round(studyItems / 3/resourceSize);
+                noOfLowPercentage = Math.round(studyItems / 4/resourceSize);
+                noOfRecentlyWrong = Math.round(studyItems / 6/resourceSize);
+            } else {
+                noOfRandomPicks = Math.round(studyItems / 4);
+                noOfOlderPicks = Math.round(studyItems / 3);
+                noOfLowPercentage = Math.round(studyItems / 4);
+                noOfRecentlyWrong = Math.round(studyItems / 6);
+            }
+
+            for (int i=0; i<noOfRandomPicks;i++) {
+                Random rand = new Random();
+                int n = rand.nextInt(resourceSentences.size());
+                sessionSentences.add(resourceSentences.get(n));
+                resourceSentences.remove(n);
+            }
+
+            for (int i=0; i<noOfOlderPicks;i++) {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                Sentence leastRecent = resourceSentences.get(0);
+                Date earliestDate = Calendar.getInstance().getTime();
+                for (Sentence s : resourceSentences) {
+                    if (s.getDate() == null) {
+                        break;
+                    } else {
+                        Date date = null;
+                        try {
+                            date = formatter.parse(s.getDate());
+                            if (date.before(earliestDate)) {
+                                earliestDate = date;
+                                leastRecent = s;
+                            }
+                        } catch (ParseException parp) {
+                            System.out.print("Can't convert date: " + parp.getMessage());
+                        }
+                    }
+                }
+                sessionSentences.add(leastRecent);
+                resourceSentences.remove(leastRecent);
+            }
+
+            for (int i=0; i<noOfLowPercentage;i++){
+                float lowest = 100;
+                Sentence lowestTerm = resourceSentences.get(0);
+                for (Sentence s : resourceSentences) {
+                    if (s.getPercent() < lowest) {
+                        lowest = s.getPercent();
+                        lowestTerm = s;
+                    }
+                }
+                sessionSentences.add(lowestTerm);
+                resourceSentences.remove(lowestTerm);
+            }
+
+            for (int i=0; i<noOfRecentlyWrong;i++){
+                Random rand = new Random();
+                Boolean found = false;
+                while (found == false){
+                    int n = rand.nextInt(resourceSentences.size());
+                    if (resourceSentences.get(n).getStatus() == false) {
+                        sessionSentences.add(resourceSentences.get(n));
+                        resourceSentences.remove(n);
+                        found = true;
+                    }
+                }
+
+            }
+
+            while(sessionSentences.size() > studyItems) {
+                sessionSentences.remove(-1);
+            }
+            while(sessionSentences.size() < studyItems && sessionSentences.size() < resourceSize) {
+                Random rand = new Random();
+                int n = rand.nextInt(resourceSentences.size());
+                sessionSentences.add(resourceSentences.get(n));
+                resourceSentences.remove(n);
+            }
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -137,32 +222,67 @@ public class LearningSession {
 
 
     public static void learn(Resource r) {
+        int items;
         if(r.getType().equals("NS")){
+            items = r.getSChildren(Main.database).size();
+        } else {
+            items = r.getTChildren(Main.database).size();
+        }
+
+        if(items < 4) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Resource Error");
-            alert.setHeaderText("Sorry, you cannot use this study session for this type of resource. Please choose another type of session.");
+            if (items == 0) {
+                alert.setHeaderText("The resource is empty. Please add some items to the resource to run a study session.");
+            }
+            else {
+                alert.setHeaderText("The session cannot be launched as the resource only has " + items + " items in it. Please add more.");
+            }
             alert.showAndWait();
-        }
-        else {
-            int correctAns = 0;
-            getSessionItems(r);
-            Main.stage.setScene(LearningSessionView.view(r, "Learn", correctAns));
+        } else {
+            if (r.getType().equals("NS")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Resource Error");
+                alert.setHeaderText("Sorry, you cannot use this study session for this type of resource. Please choose another type of session.");
+                alert.showAndWait();
+            } else {
+                int correctAns = 0;
+                getSessionItems(r);
+                Main.stage.setScene(LearningSessionView.view(r, "Learn", correctAns));
+            }
         }
     }
     public static void cards(Resource r) {
 
     }
     public static void blanks(Resource r) {
-        if(r.getType().equals("TD")){
+        int items;
+        if(r.getType().equals("NS")){
+            items = r.getSChildren(Main.database).size();
+        } else {
+            items = r.getTChildren(Main.database).size();
+        }
+        if(items < 4) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Resource Error");
-            alert.setHeaderText("Sorry, you cannot use this study session for this type of resource. Please choose another type of session.");
+            if (items == 0) {
+                alert.setHeaderText("The resource is empty. Please add some items to the resource to run a study session.");
+            }
+            else {
+                alert.setHeaderText("The session cannot be launched as the resource only has " + items + " items in it. Please add more.");
+            }
             alert.showAndWait();
-        }
-        else {
-            int correctAns = 0;
-            //change this getSessionItems(r);
-            Main.stage.setScene(LearningSessionView.view(r, "Blanks", correctAns));
+        } else {
+            if (r.getType().equals("TD")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Resource Error");
+                alert.setHeaderText("Sorry, you cannot use this study session for this type of resource. Please choose another type of session.");
+                alert.showAndWait();
+            } else {
+                int correctAns = 0;
+                getSessionItems(r);
+                Main.stage.setScene(LearningSessionView.view(r, "Blanks", correctAns));
+            }
         }
     }
 }
