@@ -22,31 +22,31 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Stack;
 
-import static Controller.LearningSession.getSessionItems;
 import static Controller.LearningSession.sessionTerms;
-import static Controller.LearningSession.sessionSentences;
 
 
 public class LearningSessionView {
+
+    public static Label blanksLabel;
+    public static BlankSentence blankThing;
+    public static int sentenceNumber = 0;
+    public static Text text;
+    public static VBox correctPane;
+
     public static Scene view(Resource resource, String type) {
         Random rand = new Random();
         ArrayList<Term> terms = new ArrayList<>();
         String term = "";
         ArrayList<Definition> definitions = new ArrayList<>();
         String definition = "";
-        ArrayList<Sentence> sentences = new ArrayList<>();
-        String sentenceWithBlanks = "";
-        ArrayList<String> blanks = new ArrayList<>();
+        //ArrayList<Sentence> sentences = new ArrayList<>();
 
-        if(resource.getType()=="TD"){
+        if(resource.getType().equals("TD")){
             terms = resource.getTChildren(Main.database);
             term = sessionTerms.get(0).getContent();
             definition = sessionTerms.get(0).getAnswers(Main.database).get(rand.nextInt(sessionTerms.get(0).getAnswers(Main.database).size())).getDesc();
@@ -56,9 +56,8 @@ public class LearningSessionView {
                 }
             }
         }else {
-            sentences = resource.getSChildren(Main.database);
-            blanks = sessionSentences.get(0).createBlanks();
-            sentenceWithBlanks = blanks.get(2);
+            //sentences = resource.getSChildren(Main.database);
+            blankThing = LearningSession.sessionSentences.get(sentenceNumber).createBlanks();
         }
 
         int time = 20;
@@ -106,7 +105,7 @@ public class LearningSessionView {
                 new KeyFrame(Duration.seconds(time+1),
                         new KeyValue(timeSecs, 0)));
         timeline.playFromStart();
-        timeline.setOnFinished(ae -> LearningSessionController.outOfTime());
+        timeline.setOnFinished(ae -> LearningSessionController.outOfTime(resource));
 
         timerPane.getChildren().add(timerLabel);
 
@@ -125,16 +124,12 @@ public class LearningSessionView {
         tt.play();
 
         if(type.equals("Learn")||type.equals("Cards")||type.equals("Blanks")){
-            VBox correctPane = new VBox();
+            correctPane = new VBox();
             correctPane.setAlignment(Pos.BOTTOM_CENTER);
             correctPane.setPadding(new Insets(15));
             correctPane.setSpacing(10);
             root.setRight(correctPane);
-            for(int i=0;i<=LearningSession.correctAns-1;i++){
-                ImageView newPoint = new ImageView();
-                newPoint.setImage(new Image("images/settings.png"));
-                correctPane.getChildren().add(newPoint);
-            }
+            LearningSessionController.displayCorrect();
         }
         if(type.equals("Learn")){
             TilePane learningPane = new TilePane();
@@ -237,31 +232,32 @@ public class LearningSessionView {
             Rectangle textBox = new Rectangle();
             textBox.setWidth(500);
             textPane.setPadding(new Insets(150,150,100,150));
-            Text text = new Text(sentenceWithBlanks);
+            text = new Text(blankThing.sentence);
             text.setTextAlignment(TextAlignment.CENTER);
             text.setFont(Font.font("Berlin Sans FB", 35));
             text.wrappingWidthProperty().bind(textBox.widthProperty());
             textPane.getChildren().add(text);
 
-            ArrayList<String> blanksFinal = blanks;
-            for(int i=0;i<2;i++) {
-                int number = i-1;
+            //ArrayList<String> blanksFinal = blanks;
+            //for(int i=0;i<2;i++) {
+//                int number = i-1;
                 GridPane answerPane = new GridPane();
                 TextField answerBox = new TextField();
                 answerBox.setFont(Font.font("Arial", 30));
                 Button goBtn = new Button("GO");
+                LearningSessionController.number = 0;   // RESET THE NUMBER
                 goBtn.setOnAction(ae -> {
-                    LearningSessionController.checkBlank(blanksFinal.get(number), answerBox.getText(), number);
+                    LearningSessionController.checkBlank(answerBox.getText(), resource);
                 });
                 goBtn.setFont(Font.font("Arial", 30));
-                Label blanksLabel = new Label("Blank " + String.valueOf(number+1));
+                blanksLabel = new Label("Blank 1");
                 answerPane.add(blanksLabel, 0, 0, 2, 1);
                 answerPane.add(answerBox, 0, 1);
                 answerPane.add(goBtn, 1, 1);
                 answerPane.setAlignment(Pos.CENTER);
                 answerPane.setPadding(new Insets(40, 100, 200, 100));
                 root.setBottom(answerPane);
-            }
+  //          }
 
             textPane.setStyle("-fx-background-color: rgb(" + LayoutController.getRed()+", "+LayoutController.getGreen()+", "+LayoutController.getBlue() + ")");
             root.setCenter(textPane);

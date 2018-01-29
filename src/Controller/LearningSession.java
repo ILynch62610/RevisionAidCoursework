@@ -71,10 +71,13 @@ public class LearningSession {
                 for (Term t : resourceTerms) {
                     Date date = null;
                     try {
-                        date = formatter.parse(t.getAnswers(Main.database).get(0).getDate());
-                        if (date.before(earliestDate)) {
-                            earliestDate = date;
-                            leastRecent = t;
+                        String theDate = t.getAnswers(Main.database).get(0).getDate();
+                        if (theDate != null && !theDate.toLowerCase().equals("null")) {
+                            date = formatter.parse(theDate);
+                            if (date.before(earliestDate)) {
+                                earliestDate = date;
+                                leastRecent = t;
+                            }
                         }
                     }
                     catch (ParseException parp) {

@@ -3,10 +3,7 @@ package Model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 public class Sentence {
     int iD;
@@ -90,29 +87,27 @@ public class Sentence {
     }
 
     private void checkDate() {
-        if(lastDate != null) {
+        if(lastDate != null && !lastDate.toLowerCase().equals("null")) {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date today = Calendar.getInstance().getTime();
             Date date = null;
             try {
                 date = formatter.parse(lastDate);
-                if (date.after(today)) {
+                if (date != null && date.after(today)) {
                     lastDate = today.toString();
                 }
             } catch (ParseException parp) {
-                System.out.print("Can't convert date: " + parp.getMessage());
+                System.out.println("Can't convert date: " + parp.getMessage());
             }
         }
     }
 
-    public ArrayList<String> createBlanks() {
-        ArrayList<String> blanksAndAnswers = new ArrayList<String>();
+    public BlankSentence createBlanks() {
+
+        BlankSentence result = new BlankSentence();
 
         String[] nonBlanks = {"this", "the", "and", "or", "so", "because", "then", "a", "it", "on", "in", "was", "is", "that", "to", "than", "its", "it's", "from", "were", "with", "of", "at", "too", ".", ",", "!","&", "-"};
-        ArrayList<String> nonBlanksList = new ArrayList<String>();
-        for(String s : nonBlanks) {
-            nonBlanksList.add(s);
-        }
+        ArrayList<String> nonBlanksList = new ArrayList<>(Arrays.asList(nonBlanks));
 
         String[] words = this.getContent().split(" ");
         int noWords = words.length;
@@ -123,7 +118,7 @@ public class Sentence {
                 Random rand = new Random();
                 int pos = rand.nextInt(noWords);
                 if (!nonBlanksList.contains(words[pos].toLowerCase())) {
-                    blanksAndAnswers.add(words[pos]);
+                    result.blanks.add(words[pos]);
                     words[pos] = "_____";
                     found = true;
                 }
@@ -131,8 +126,8 @@ public class Sentence {
         }
 
         String withBlanks = String.join(" ",words);
-        blanksAndAnswers.add(withBlanks);
-        return blanksAndAnswers;
+        result.sentence = withBlanks;
+        return result;
     }
 
     @Override
