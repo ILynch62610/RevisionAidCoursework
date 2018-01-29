@@ -21,6 +21,7 @@ public class LearningSession {
 
     public static ArrayList<Term> sessionTerms;
     public static ArrayList<Sentence> sessionSentences;
+    public static int correctAns;
 
     public static int getItemsPerSessionConfig(String type) {
         int learnItems = 5;
@@ -246,9 +247,9 @@ public class LearningSession {
                 alert.setHeaderText("Sorry, you cannot use this study session for this type of resource. Please choose another type of session.");
                 alert.showAndWait();
             } else {
-                int correctAns = 0;
+                correctAns = 0;
                 getSessionItems(r);
-                Main.stage.setScene(LearningSessionView.view(r, "Learn", correctAns));
+                Main.stage.setScene(LearningSessionView.view(r, "Learn"));
             }
         }
     }
@@ -257,6 +258,7 @@ public class LearningSession {
     }
     public static void blanks(Resource r) {
         int items;
+        correctAns = 0;
         if(r.getType().equals("NS")){
             items = r.getSChildren(Main.database).size();
         } else {
@@ -281,7 +283,7 @@ public class LearningSession {
             } else {
                 int correctAns = 0;
                 getSessionItems(r);
-                Main.stage.setScene(LearningSessionView.view(r, "Blanks", correctAns));
+                Main.stage.setScene(LearningSessionView.view(r, "Blanks"));
             }
         }
     }

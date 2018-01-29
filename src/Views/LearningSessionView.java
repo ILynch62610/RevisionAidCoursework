@@ -36,7 +36,7 @@ import static Controller.LearningSession.sessionSentences;
 
 
 public class LearningSessionView {
-    public static Scene view(Resource resource, String type, int correctAns) {
+    public static Scene view(Resource resource, String type) {
         Random rand = new Random();
         ArrayList<Term> terms = new ArrayList<>();
         String term = "";
@@ -44,8 +44,7 @@ public class LearningSessionView {
         String definition = "";
         ArrayList<Sentence> sentences = new ArrayList<>();
         String sentenceWithBlanks = "";
-        String blank1 = "";
-        String blank2 = "";
+        ArrayList<String> blanks = new ArrayList<>();
 
         if(resource.getType()=="TD"){
             terms = resource.getTChildren(Main.database);
@@ -58,10 +57,8 @@ public class LearningSessionView {
             }
         }else {
             sentences = resource.getSChildren(Main.database);
-            ArrayList<String> blanks = sessionSentences.get(0).createBlanks();
+            blanks = sessionSentences.get(0).createBlanks();
             sentenceWithBlanks = blanks.get(2);
-            blank1 = blanks.get(0);
-            blank2 = blanks.get(1);
         }
 
         int time = 20;
@@ -127,13 +124,13 @@ public class LearningSessionView {
 
         tt.play();
 
-        if(type.equals("Learn")||type.equals("Cards")){
+        if(type.equals("Learn")||type.equals("Cards")||type.equals("Blanks")){
             VBox correctPane = new VBox();
             correctPane.setAlignment(Pos.BOTTOM_CENTER);
             correctPane.setPadding(new Insets(15));
             correctPane.setSpacing(10);
             root.setRight(correctPane);
-            for(int i=0;i<=correctAns-1;i++){
+            for(int i=0;i<=LearningSession.correctAns-1;i++){
                 ImageView newPoint = new ImageView();
                 newPoint.setImage(new Image("images/settings.png"));
                 correctPane.getChildren().add(newPoint);
@@ -240,24 +237,32 @@ public class LearningSessionView {
             Rectangle textBox = new Rectangle();
             textBox.setWidth(500);
             textPane.setPadding(new Insets(150,150,100,150));
-            GridPane answerPane = new GridPane();
             Text text = new Text(sentenceWithBlanks);
             text.setTextAlignment(TextAlignment.CENTER);
             text.setFont(Font.font("Berlin Sans FB", 35));
             text.wrappingWidthProperty().bind(textBox.widthProperty());
             textPane.getChildren().add(text);
 
-            TextField answerBox = new TextField();
-            answerBox.setFont(Font.font("Arial", 30));
-            Button goBtn = new Button("GO");
-            goBtn.setFont(Font.font("Arial",30));
-            Label blanksLabel = new Label("Blank " /*+ blanksNo*/);
-            answerPane.add(blanksLabel,0,0,2,1);
-            answerPane.add(answerBox,0,1);
-            answerPane.add(goBtn,1,1);
-            answerPane.setAlignment(Pos.CENTER);
-            answerPane.setPadding(new Insets(40,100,200,100));
-            root.setBottom(answerPane);
+            ArrayList<String> blanksFinal = blanks;
+            for(int i=0;i<2;i++) {
+                int number = i-1;
+                GridPane answerPane = new GridPane();
+                TextField answerBox = new TextField();
+                answerBox.setFont(Font.font("Arial", 30));
+                Button goBtn = new Button("GO");
+                goBtn.setOnAction(ae -> {
+                    LearningSessionController.checkBlank(blanksFinal.get(number), answerBox.getText(), number);
+                });
+                goBtn.setFont(Font.font("Arial", 30));
+                Label blanksLabel = new Label("Blank " + String.valueOf(number+1));
+                answerPane.add(blanksLabel, 0, 0, 2, 1);
+                answerPane.add(answerBox, 0, 1);
+                answerPane.add(goBtn, 1, 1);
+                answerPane.setAlignment(Pos.CENTER);
+                answerPane.setPadding(new Insets(40, 100, 200, 100));
+                root.setBottom(answerPane);
+            }
+
             textPane.setStyle("-fx-background-color: rgb(" + LayoutController.getRed()+", "+LayoutController.getGreen()+", "+LayoutController.getBlue() + ")");
             root.setCenter(textPane);
         }
