@@ -22,6 +22,7 @@ public class LearningSession {
     public static ArrayList<Term> sessionTerms;
     public static ArrayList<Sentence> sessionSentences;
     public static int correctAns;
+    public static int attempsNo;
 
     public static int getItemsPerSessionConfig(String type) {
         int learnItems = 5;
@@ -251,6 +252,7 @@ public class LearningSession {
                 alert.showAndWait();
             } else {
                 correctAns = 0;
+                attempsNo = 0;
                 getSessionItems(r);
                 Main.stage.setScene(LearningSessionView.view(r, "Learn"));
             }

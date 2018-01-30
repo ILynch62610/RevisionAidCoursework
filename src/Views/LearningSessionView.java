@@ -37,6 +37,9 @@ public class LearningSessionView {
     public static int sentenceNumber = 0;
     public static Text text;
     public static VBox correctPane;
+    public static TilePane learningPane;
+    public static ArrayList<String> selectedItems = new ArrayList<>();
+    public static int numberSelected=0;
 
     public static Scene view(Resource resource, String type) {
         Random rand = new Random();
@@ -128,11 +131,12 @@ public class LearningSessionView {
             correctPane.setAlignment(Pos.BOTTOM_CENTER);
             correctPane.setPadding(new Insets(15));
             correctPane.setSpacing(10);
+            correctPane.setPrefWidth(75);
             root.setRight(correctPane);
             LearningSessionController.displayCorrect();
         }
         if(type.equals("Learn")){
-            TilePane learningPane = new TilePane();
+            learningPane = new TilePane();
             learningPane.setHgap(90);
             learningPane.setVgap(120);
             learningPane.setPadding(new Insets(70,45,70,45));
@@ -169,12 +173,18 @@ public class LearningSessionView {
                 rect.setHeight(100);
                 rect.setWidth(150);
                 Text text = new Text(spaceFills[i]);
+                rect.setOnMouseClicked(ae -> LearningSessionController.selectItem(rect,text));
+                text.setOnMouseClicked(ae -> LearningSessionController.selectItem(rect,text));
                 text.setWrappingWidth(130);
                 text.setTextAlignment(TextAlignment.CENTER);
                 StackPane stack = new StackPane();
                 stack.getChildren().addAll(rect, text);
                 learningPane.getChildren().add(stack);
             }
+            Button checkBtn = new Button("MATCH");
+            checkBtn.setOnAction(ae -> LearningSessionController.checkMatch());
+
+            learningPane.getChildren().add(checkBtn);
             root.setCenter(learningPane);
         }
         else if(type.equals("Cards")){

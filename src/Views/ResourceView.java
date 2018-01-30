@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -44,12 +45,16 @@ public class ResourceView {
 
         //Creates Session Buttons
         Button learnSBtn = new Button("LEARN");
+        learnSBtn.setGraphic(new ImageView(new Image("/images/learnicon.png",200,200,true,true)));
         learnSBtn.setOnAction(ae -> ResourceController.changeToLearnView(ae,resource));
         Button cardsSBtn = new Button("CARDS");
+        cardsSBtn.setGraphic(new ImageView(new Image("/images/cardsicon.png",200,200,true,true)));
         cardsSBtn.setOnAction(ae -> ResourceController.changeToCardsView(ae, resource));
         Button blanksSBtn = new Button("BLANKS");
+        blanksSBtn.setGraphic(new ImageView(new Image("/images/blanksicon.png",200,200,true,true)));
         blanksSBtn.setOnAction(ae -> ResourceController.changeToBlanksView(ae, resource));
         Button quizSBtn = new Button("QUIZ");
+        quizSBtn.setGraphic(new ImageView(new Image("/images/quizicon.png",200,200,true,true)));
         quizSBtn.setOnAction(ae -> ResourceController.changeToQuizView());
         GridPane sessionBtns = new GridPane();
         ColumnConstraints buf1 = new ColumnConstraints();
