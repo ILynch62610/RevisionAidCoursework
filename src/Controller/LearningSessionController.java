@@ -1,8 +1,10 @@
 package Controller;
 
 import Model.Definition;
+import Model.DefinitionService;
 import Model.Resource;
 import Model.Term;
+import Views.HomeView;
 import Views.LearningSessionView;
 import Views.ResourceView;
 import javafx.scene.control.Alert;
@@ -14,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class LearningSessionController {
@@ -48,60 +51,136 @@ public class LearningSessionController {
         }
     }
 
-    public static void selectItem(Rectangle rect, Text text) {
+    public static void selectItem(Rectangle rect, Text text, StackPane pane) {
         if (rect.getFill()== javafx.scene.paint.Color.GRAY){
             rect.setFill(javafx.scene.paint.Color.CORAL);
             LearningSessionView.numberSelected--;
             LearningSessionView.selectedItems.remove(text.getText());
+            LearningSessionView.selectedPanes.remove(pane);
         }
         else if (LearningSessionView.numberSelected < 2) {
             rect.setFill(Color.GRAY);
             LearningSessionView.numberSelected++;
             LearningSessionView.selectedItems.add(text.getText());
+            LearningSessionView.selectedPanes.add(pane);
         }
     }
 
-    public static void checkMatch() {
+    public static void checkMatch(Resource r) {
         Term term1 = null;
         Term term2 = null;
         Definition def1 = null;
         Definition def2 = null;
         ArrayList<Definition> definitions = new ArrayList<>();
-        for (Term t : LearningSession.sessionTerms) {
-            for(int i=0; i<t.getAnswers(Main.database).size();i++) {
-                definitions.add(t.getAnswers(Main.database).get(i));
+        if (LearningSessionView.selectedItems.size() > 1) {
+            for (Term t : LearningSession.sessionTerms) {
+                for (int i = 0; i < t.getAnswers(Main.database).size(); i++) {
+                    definitions.add(t.getAnswers(Main.database).get(i));
+                }
+                if (LearningSessionView.selectedItems.size() > 1) {
+                    if (LearningSessionView.selectedItems.get(0).equals(t.getContent())) {
+                        term1 = t;
+                    } else if (LearningSessionView.selectedItems.get(1).equals(t.getContent())) {
+                        term2 = t;
+                    }
+                }
+                for (Definition d : definitions) {
+                    if (LearningSessionView.selectedItems.get(0).equals(d.getDesc())) {
+                        def1 = d;
+                    } else if (LearningSessionView.selectedItems.get(1).equals(d.getDesc())) {
+                        def2 = d;
+                    }
+                }
             }
-            if (LearningSessionView.selectedItems.get(0).equals(t.getContent())) {
-                term1 = t;
-            } else if (LearningSessionView.selectedItems.get(1).equals(t.getContent())) {
-                term2 = t;
-            }
-        }
-        for (Definition d : definitions) {
-            if (LearningSessionView.selectedItems.get(0).equals(d.getDesc())) {
-                def1 = d;
-            } else if (LearningSessionView.selectedItems.get(1).equals(d.getDesc())) {
-                def2 = d;
-            }
-        }
-        if ((term1 == null && term2 == null) || (def1 == null && def2 == null)) {
-            wrongAns();
-        } else if(term1 == null) {
-            System.out.println(def2.getParent());
-            System.out.println(term1.getiD());
-            if (def2.getParent() == term1.getiD()) {
-                LearningSession.correctAns++;
-                displayAttempts();
-            } else {
+            if ((term1 == null && term2 == null) || (def1 == null && def2 == null)) {
+                if (term1 == null) {
+                    def1.setAppear(def1.getAppear() + 1);
+                    def2.setAppear(def2.getAppear() + 1);
+                    def1.calculatePercent();
+                    def2.calculatePercent();
+                    DefinitionService.save(def1, Main.database);
+                    DefinitionService.save(def2, Main.database);
+                } else {
+                    for (Definition d : term1.getAnswers(Main.database)) {
+                        if (Arrays.asList(LearningSessionView.spaceFills).contains(d.getDesc())) {
+                            d.setAppear(d.getAppear() + 1);
+                            d.calculatePercent();
+                            DefinitionService.save(d, Main.database);
+                        }
+                    }
+                    for (Definition d : term2.getAnswers(Main.database)) {
+                        if (Arrays.asList(LearningSessionView.spaceFills).contains(d.getDesc())) {
+                            d.setAppear(d.getAppear() + 1);
+                            d.calculatePercent();
+                            DefinitionService.save(d, Main.database);
+                        }
+                    }
+                }
                 wrongAns();
+            } else if (term1 == null) {
+                if (def1.getParent() == term2.getiD()) {
+                    LearningSession.correctAns++;
+                    def1.setAppear(def1.getAppear() + 1);
+                    def1.setCorrect(def1.getCorrect() + 1);
+                    def1.calculatePercent();
+                    DefinitionService.save(def1, Main.database);
+                    LearningSessionView.learningPane.getChildren().removeAll(LearningSessionView.selectedPanes);
+                    LearningSessionView.selectedItems.clear();
+                    LearningSessionView.selectedPanes.clear();
+                    LearningSessionView.numberSelected = 0;
+                    displayAttempts();
+                    if (LearningSessionView.learningPane.getChildren().size() == 1) {
+                        Main.stage.setScene(ResourceView.view(r));
+                        LearningSessionView.timeline.stop();
+                    }
+                } else {
+                    def1.setAppear(def1.getAppear() + 1);
+                    def1.calculatePercent();
+                    DefinitionService.save(def1, Main.database);
+                    for (Definition d : term2.getAnswers(Main.database)) {
+                        if (Arrays.asList(LearningSessionView.spaceFills).contains(d.getDesc())) {
+                            d.setAppear(d.getAppear() + 1);
+                            d.calculatePercent();
+                            DefinitionService.save(d, Main.database);
+                        }
+                    }
+                    wrongAns();
+                }
+            } else {
+                if (def2.getParent() == term1.getiD()) {
+                    LearningSession.correctAns++;
+                    displayAttempts();
+                    def2.setAppear(def2.getAppear() + 1);
+                    def2.setCorrect(def2.getCorrect() + 1);
+                    def2.calculatePercent();
+                    DefinitionService.save(def2, Main.database);
+                    LearningSessionView.learningPane.getChildren().removeAll(LearningSessionView.selectedPanes);
+                    LearningSessionView.selectedItems.clear();
+                    LearningSessionView.selectedPanes.clear();
+                    LearningSessionView.numberSelected = 0;
+                    if (LearningSessionView.learningPane.getChildren().size() == 1) {
+                        Main.stage.setScene(ResourceView.view(r));
+                        LearningSessionView.timeline.stop();
+                    }
+                } else {
+                    def2.setAppear(def2.getAppear() + 1);
+                    def2.calculatePercent();
+                    DefinitionService.save(def2, Main.database);
+                    for (Definition d : term1.getAnswers(Main.database)) {
+                        if (Arrays.asList(LearningSessionView.spaceFills).contains(d.getDesc())) {
+                            d.setAppear(d.getAppear() + 1);
+                            d.calculatePercent();
+                            DefinitionService.save(d, Main.database);
+                        }
+                    }
+                    wrongAns();
+                }
             }
         } else {
-            if (def1.getParent() == term2.getiD()) {
-                LearningSession.correctAns++;
-                displayAttempts();
-            } else {
-                wrongAns();
-            }
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Something's Wrong");
+            alert.setHeaderText("Please select 2 items and then click the match button.");
+            alert.show();
         }
     }
 

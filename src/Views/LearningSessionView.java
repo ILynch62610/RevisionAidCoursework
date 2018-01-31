@@ -39,7 +39,10 @@ public class LearningSessionView {
     public static VBox correctPane;
     public static TilePane learningPane;
     public static ArrayList<String> selectedItems = new ArrayList<>();
+    public static ArrayList<StackPane> selectedPanes = new ArrayList<>();
     public static int numberSelected=0;
+    public static String[] spaceFills = new String[12];
+    public static Timeline timeline = new Timeline();
 
     public static Scene view(Resource resource, String type) {
         Random rand = new Random();
@@ -103,7 +106,6 @@ public class LearningSessionView {
         IntegerProperty timeSecs = new SimpleIntegerProperty(time);
         timerLabel.textProperty().bind(timeSecs.asString());
 
-        Timeline timeline = new Timeline();
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.seconds(time+1),
                         new KeyValue(timeSecs, 0)));
@@ -142,7 +144,6 @@ public class LearningSessionView {
             learningPane.setPadding(new Insets(70,45,70,45));
 
             int[] spaces = {1,2,3,4,5,6,7,8,9,10,11,12};
-            String[] spaceFills = new String[12];
             for(int i=0;i<sessionTerms.size();i++){
                 Boolean foundDef = false;
                 Boolean foundTerm = false;
@@ -173,16 +174,16 @@ public class LearningSessionView {
                 rect.setHeight(100);
                 rect.setWidth(150);
                 Text text = new Text(spaceFills[i]);
-                rect.setOnMouseClicked(ae -> LearningSessionController.selectItem(rect,text));
-                text.setOnMouseClicked(ae -> LearningSessionController.selectItem(rect,text));
+                StackPane stack = new StackPane();
+                rect.setOnMouseClicked(ae -> LearningSessionController.selectItem(rect,text,stack));
+                text.setOnMouseClicked(ae -> LearningSessionController.selectItem(rect,text,stack));
                 text.setWrappingWidth(130);
                 text.setTextAlignment(TextAlignment.CENTER);
-                StackPane stack = new StackPane();
                 stack.getChildren().addAll(rect, text);
                 learningPane.getChildren().add(stack);
             }
             Button checkBtn = new Button("MATCH");
-            checkBtn.setOnAction(ae -> LearningSessionController.checkMatch());
+            checkBtn.setOnAction(ae -> LearningSessionController.checkMatch(resource));
 
             learningPane.getChildren().add(checkBtn);
             root.setCenter(learningPane);
