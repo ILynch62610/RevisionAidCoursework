@@ -70,6 +70,12 @@ public class Definition {
         this.lastDate = lastDate;
     }
 
+    public void setDateToday() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date today = Calendar.getInstance().getTime();
+        this.lastDate = formatter.format(today);
+    }
+
     public boolean getStatus() {
         return lastStatus;
     }

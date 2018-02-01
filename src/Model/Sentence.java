@@ -70,6 +70,12 @@ public class Sentence {
         this.lastDate = lastDate;
     }
 
+    public void setDateToday() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date today = Calendar.getInstance().getTime();
+        this.lastDate = formatter.format(today);
+    }
+
     public boolean getStatus() {
         return lastStatus;
     }
@@ -111,6 +117,7 @@ public class Sentence {
 
         String[] words = this.getContent().split(" ");
         int noWords = words.length;
+        int[] positions = new int[2];
 
         for (int i = 0; i < 2; i++) {
             Boolean found = false;
@@ -118,15 +125,24 @@ public class Sentence {
                 Random rand = new Random();
                 int pos = rand.nextInt(noWords);
                 if (!nonBlanksList.contains(words[pos].toLowerCase())) {
-                    result.blanks.add(words[pos]);
-                    words[pos] = "_____";
+                    positions[i] = pos;
                     found = true;
                 }
             }
         }
+        if (positions[0] > positions[1]) {
+            int temp = positions[1];
+            positions[1] = positions[0];
+            positions[0] = temp;
+        }
+        for (int i=0; i<2; i++) {
+            result.blanks.add(words[positions[i]]);
+            words[positions[i]] = "_____";
+        }
 
         String withBlanks = String.join(" ",words);
         result.sentence = withBlanks;
+        result.original = this;
         return result;
     }
 

@@ -36,6 +36,8 @@ public class SettingsView {
         VBox pane = new VBox();
         pane.setMaxWidth(350);
         pane.setPrefWidth(350);
+        pane.setTranslateY(100);
+        pane.prefHeightProperty().bind(Main.scene.heightProperty());
         pane.setStyle("-fx-background-color: whitesmoke");
         root.getChildren().add(pane);
 
@@ -105,27 +107,30 @@ public class SettingsView {
 
                 Label learningLbl = new Label("Learning Sessions");
                 ToggleGroup learningTimerGrp = new ToggleGroup();
-                Label onLbl = new Label("On");
+                Label onLbl1 = new Label("On");
                 RadioButton learningTimerOn = new RadioButton();
                 learningTimerOn.setSelected(true);
                 learningTimerOn.setToggleGroup(learningTimerGrp);
-                Label offLbl = new Label("Off");
+                Label offLbl1 = new Label("Off");
                 RadioButton learningTimerOff = new RadioButton();
                 learningTimerOff.setSelected(false);
                 learningTimerOff.setToggleGroup(learningTimerGrp);
 
-                Label perItemLbl = new Label("Time per Item");
+                Label perItemLbl1 = new Label("Time per Item");
                 TextField learningField = new TextField();
 
                 Label studyLbl = new Label("Study Sessions");
                 ToggleGroup studyTimerGrp = new ToggleGroup();
+                Label onLbl2 = new Label("On");
                 RadioButton studyTimerOn = new RadioButton();
                 studyTimerOn.setSelected(true);
                 studyTimerOn.setToggleGroup(studyTimerGrp);
+                Label offLbl2 = new Label("Off");
                 RadioButton studyTimerOff = new RadioButton();
                 studyTimerOff.setSelected(false);
                 studyTimerOff.setToggleGroup(studyTimerGrp);
 
+                Label perItemLbl2 = new Label("Time per Item");
                 TextField studyField = new TextField();
 
                 Button confirmBtn = new Button("Confirm");
@@ -135,18 +140,18 @@ public class SettingsView {
                 pane.getChildren().add(timerLbl);
                 pane.getChildren().add(timerText);
                 pane.getChildren().add(learningLbl);
-                pane.getChildren().add(onLbl);
+                pane.getChildren().add(onLbl1);
                 pane.getChildren().add(learningTimerOn);
-                pane.getChildren().add(offLbl);
+                pane.getChildren().add(offLbl1);
                 pane.getChildren().add(learningTimerOff);
-                pane.getChildren().add(perItemLbl);
+                pane.getChildren().add(perItemLbl1);
                 pane.getChildren().add(learningField);
                 pane.getChildren().add(studyLbl);
-                pane.getChildren().add(onLbl);
+                pane.getChildren().add(onLbl2);
                 pane.getChildren().add(studyTimerOn);
-                pane.getChildren().add(offLbl);
+                pane.getChildren().add(offLbl2);
                 pane.getChildren().add(studyTimerOff);
-                pane.getChildren().add(perItemLbl);
+                pane.getChildren().add(perItemLbl2);
                 pane.getChildren().add(studyField);
                 pane.getChildren().add(confirmBtn);
             });

@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Definition;
-import Model.DefinitionService;
-import Model.Resource;
-import Model.Term;
+import Model.*;
 import Views.HomeView;
 import Views.LearningSessionView;
 import Views.ResourceView;
@@ -98,6 +95,10 @@ public class LearningSessionController {
                     def2.setAppear(def2.getAppear() + 1);
                     def1.calculatePercent();
                     def2.calculatePercent();
+                    def1.setDateToday();
+                    def2.setDateToday();
+                    def1.setStatus(false);
+                    def2.setStatus(false);
                     DefinitionService.save(def1, Main.database);
                     DefinitionService.save(def2, Main.database);
                 } else {
@@ -105,6 +106,8 @@ public class LearningSessionController {
                         if (Arrays.asList(LearningSessionView.spaceFills).contains(d.getDesc())) {
                             d.setAppear(d.getAppear() + 1);
                             d.calculatePercent();
+                            d.setDateToday();
+                            d.setStatus(false);
                             DefinitionService.save(d, Main.database);
                         }
                     }
@@ -112,6 +115,8 @@ public class LearningSessionController {
                         if (Arrays.asList(LearningSessionView.spaceFills).contains(d.getDesc())) {
                             d.setAppear(d.getAppear() + 1);
                             d.calculatePercent();
+                            d.setDateToday();
+                            d.setStatus(false);
                             DefinitionService.save(d, Main.database);
                         }
                     }
@@ -123,6 +128,8 @@ public class LearningSessionController {
                     def1.setAppear(def1.getAppear() + 1);
                     def1.setCorrect(def1.getCorrect() + 1);
                     def1.calculatePercent();
+                    def1.setDateToday();
+                    def1.setStatus(true);
                     DefinitionService.save(def1, Main.database);
                     LearningSessionView.learningPane.getChildren().removeAll(LearningSessionView.selectedPanes);
                     LearningSessionView.selectedItems.clear();
@@ -136,11 +143,15 @@ public class LearningSessionController {
                 } else {
                     def1.setAppear(def1.getAppear() + 1);
                     def1.calculatePercent();
+                    def1.setDateToday();
+                    def1.setStatus(false);
                     DefinitionService.save(def1, Main.database);
                     for (Definition d : term2.getAnswers(Main.database)) {
                         if (Arrays.asList(LearningSessionView.spaceFills).contains(d.getDesc())) {
                             d.setAppear(d.getAppear() + 1);
                             d.calculatePercent();
+                            d.setDateToday();
+                            d.setStatus(false);
                             DefinitionService.save(d, Main.database);
                         }
                     }
@@ -153,6 +164,8 @@ public class LearningSessionController {
                     def2.setAppear(def2.getAppear() + 1);
                     def2.setCorrect(def2.getCorrect() + 1);
                     def2.calculatePercent();
+                    def2.setDateToday();
+                    def2.setStatus(true);
                     DefinitionService.save(def2, Main.database);
                     LearningSessionView.learningPane.getChildren().removeAll(LearningSessionView.selectedPanes);
                     LearningSessionView.selectedItems.clear();
@@ -165,11 +178,15 @@ public class LearningSessionController {
                 } else {
                     def2.setAppear(def2.getAppear() + 1);
                     def2.calculatePercent();
+                    def2.setDateToday();
+                    def2.setStatus(false);
                     DefinitionService.save(def2, Main.database);
                     for (Definition d : term1.getAnswers(Main.database)) {
                         if (Arrays.asList(LearningSessionView.spaceFills).contains(d.getDesc())) {
                             d.setAppear(d.getAppear() + 1);
                             d.calculatePercent();
+                            d.setDateToday();
+                            d.setStatus(false);
                             DefinitionService.save(d, Main.database);
                         }
                     }
@@ -196,20 +213,29 @@ public class LearningSessionController {
     public static void checkBlank(String answer, Resource r) {
 
         String blank = LearningSessionView.blankThing.blanks.get(number);
+        Sentence sentence = LearningSessionView.blankThing.getSentenceObject();
 
-        if (answer.equals(blank)){
+        if (answer.equals(blank.toLowerCase()) || answer.equals(blank) || (answer+".").equals(blank.toLowerCase()) || (answer+".").equals(blank) || (answer+",").equals(blank.toLowerCase()) || (answer+",").equals(blank)){
             LearningSession.correctAns +=1;
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Congratulations!");
             alert.setHeaderText("Well Done, that was the correct answer! Click ok to move on.");
             alert.showAndWait();
-
+            sentence.setAppear(sentence.getAppear()+1);
+            sentence.setCorrect(sentence.getCorrect()+1);
+            sentence.setDateToday();
+            sentence.setStatus(true);
+            SentenceService.save(sentence,Main.database);
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Sorry");
             alert.setHeaderText("Unfortunately that wasn't the correct answer. The correct answer was " + blank + ". Better luck next time! Click ok to move on.");
             alert.showAndWait();
+            sentence.setAppear(sentence.getAppear()+1);
+            sentence.setDateToday();
+            sentence.setStatus(false);
+            SentenceService.save(sentence,Main.database);
         }
 
         number++;
@@ -222,6 +248,8 @@ public class LearningSessionController {
 
             if (LearningSessionView.sentenceNumber >= LearningSession.sessionSentences.size()) {
                 Main.stage.setScene(ResourceView.view(r));
+                LearningSessionView.sentenceNumber = 0;
+                LearningSessionView.timeline.stop();
                 return;
             }
 

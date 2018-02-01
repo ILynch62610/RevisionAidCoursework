@@ -42,14 +42,30 @@ public class SettingsController {
     }
     public static void saveTimers(Boolean learningValue, String learningTime, Boolean studyValue, String studyTime) {
         String time = "";
-        if (learningValue == true) {
-            time = learningTime;
+        if (learningValue) {
+            if (learningTime.length() < 3) {
+                if(learningTime.length() < 2) {
+                    time = "00" + learningTime;
+                } else {
+                    time = "0" + learningTime;
+                }
+            } else {
+                time = learningTime;
+            }
         }
         else {
             time = "000";
         }
-        if (studyValue == true) {
-            time = time + studyValue;
+        if (studyValue) {
+            if (studyTime.length() < 3) {
+                if (studyTime.length() < 2) {
+                    time = time + "00" + studyTime;
+                } else {
+                    time = time + "0" + studyTime;
+                }
+            } else {
+                time = time + studyTime;
+            }
         }
         else {
             time = time + "000";

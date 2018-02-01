@@ -103,30 +103,32 @@ public class LearningSessionView {
         Label timerLabel = new Label();
         timerLabel.setStyle("-fx-font-size: 25px; -fx-font-weight: bold");
 
-        IntegerProperty timeSecs = new SimpleIntegerProperty(time);
-        timerLabel.textProperty().bind(timeSecs.asString());
+        if(time!=0) {
+            IntegerProperty timeSecs = new SimpleIntegerProperty(time);
+            timerLabel.textProperty().bind(timeSecs.asString());
 
-        timeline.getKeyFrames().add(
-                new KeyFrame(Duration.seconds(time+1),
-                        new KeyValue(timeSecs, 0)));
-        timeline.playFromStart();
-        timeline.setOnFinished(ae -> LearningSessionController.outOfTime(resource));
+            timeline.getKeyFrames().add(
+                    new KeyFrame(Duration.seconds(time + 1),
+                            new KeyValue(timeSecs, 0)));
+            timeline.playFromStart();
+            timeline.setOnFinished(ae -> LearningSessionController.outOfTime(resource));
 
-        timerPane.getChildren().add(timerLabel);
+            timerPane.getChildren().add(timerLabel);
 
-        Rectangle timerbar = new Rectangle();
-        timerbar.setFill(Color.DARKBLUE);
-        timerbar.setHeight(50);
-        timerbar.widthProperty().bind(root.widthProperty().multiply(0.65));
-        timerbar.setX(0);
-        timerbar.setY(0);
-        timerPane.getChildren().add(timerbar);
-        topPane.getChildren().add(timerPane);
+            Rectangle timerbar = new Rectangle();
+            timerbar.setFill(Color.DARKBLUE);
+            timerbar.setHeight(50);
+            timerbar.widthProperty().bind(root.widthProperty().multiply(0.65));
+            timerbar.setX(0);
+            timerbar.setY(0);
+            timerPane.getChildren().add(timerbar);
+            topPane.getChildren().add(timerPane);
 
-        TranslateTransition tt = new TranslateTransition(Duration.seconds(time), timerbar);
-        tt.setToX((root.getWidth()*0.65));
+            TranslateTransition tt = new TranslateTransition(Duration.seconds(time), timerbar);
+            tt.setToX((root.getWidth() * 0.65));
 
-        tt.play();
+            tt.play();
+        }
 
         if(type.equals("Learn")||type.equals("Cards")||type.equals("Blanks")){
             correctPane = new VBox();
