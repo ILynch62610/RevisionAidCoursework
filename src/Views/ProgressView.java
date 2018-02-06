@@ -68,7 +68,9 @@ public class ProgressView {
             pcntCorrect = 0;
         }
         else{
-            pcntCorrect = ((double)noCorrect/(double)totalNo)*100;
+            pcntCorrect = ((double)noCorrect/(double)totalNo)*10000;
+            pcntCorrect = Math.round(pcntCorrect);
+            pcntCorrect = pcntCorrect/100;
         }
 
         BorderPane root = LayoutGenerator.make("PROGRESS", false, false, true, "Progress");
