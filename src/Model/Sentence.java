@@ -58,6 +58,9 @@ public class Sentence {
     }
 
     public void calculatePercent() {
+        if (correctNo > appearanceNo) {
+            correctNo = appearanceNo;
+        }
         this.percentage = (getCorrect() / getAppear())*100;
     }
 

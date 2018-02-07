@@ -47,36 +47,49 @@ public class LearningSession {
         }
     }
     public static void getSessionItems(Resource r) {
+        //if the resource consists of terms and definitions, the following code will run
         if (r.getType().equals("TD")){
+            //gets all the terms in the resource
             ArrayList<Term> resourceTerms = r.getTChildren(Main.database);
             sessionTerms = new ArrayList<>();
+            //this method returns the number of items that should appear in a learning session from the settings
             int learnItems = getItemsPerSessionConfig("Learn");
 
             int resourceSize = resourceTerms.size();
-            int noOfRandomPicks = Math.round(learnItems/4);
-            int noOfOlderPicks = Math.round(learnItems/3);
-            int noOfLowPercentage = Math.round(learnItems/4);
-            int noOfRecentlyWrong = Math.round(learnItems/6);
+            //this says how many of the items should be picked based on different factors
+            int noOfRandomPicks = Math.round(learnItems/4); //a quarter of items
+            int noOfOlderPicks = Math.round(learnItems/3);  //a third of items
+            int noOfLowPercentage = Math.round(learnItems/4);   //a quarter of items
+            int noOfRecentlyWrong = Math.round(learnItems/6);   //a sixth of items
 
             for (int i=0; i<noOfRandomPicks;i++) {
+                //this will randomly choose terms and add them to the list of items to appear in the session
                 Random rand = new Random();
                 int n = rand.nextInt(resourceTerms.size());
                 sessionTerms.add(resourceTerms.get(n));
+                //it will then remove the term from the list of terms so that it can't be picked twice
                 resourceTerms.remove(n);
-            }
+            }   //this runs until the predefined number of items have been found
 
             for (int i=0; i<noOfOlderPicks;i++) {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                //sets the least recent term to be the first term in the list
                 Term leastRecent = resourceTerms.get(0);
+                //sets the earliest date to be today's date
                 Date earliestDate = Calendar.getInstance().getTime();
                 for (Term t : resourceTerms) {
+                    //goes through every term in the list of terms in the resource
                     Date date = null;
                     try {
+                        //then gets the date that the term was last in a session
                         String theDate = t.getAnswers(Main.database).get(0).getDate();
+                        //checks that the date isn't null
                         if (theDate != null && !theDate.toLowerCase().equals("null")) {
                             date = formatter.parse(theDate);
+                            //compares the date to the least recent date (originally set to today)
                             if (date.before(earliestDate)) {
                                 earliestDate = date;
+                                //if it is less recent, then that term is set to the less recent
                                 leastRecent = t;
                             }
                         }
@@ -85,19 +98,24 @@ public class LearningSession {
                         System.out.print ("Can't convert date: " + parp.getMessage());
                     }
                 }
+                //if the date was null, the term is automatically added to the list, otherwise the least recent is added
                 sessionTerms.add(leastRecent);
                 resourceTerms.remove(leastRecent);
             }
 
             for (int i=0; i<noOfLowPercentage;i++){
+                //lowest percentage is set to 100%
                 float lowest = 100;
                 Term lowestTerm = resourceTerms.get(0);
                 for (Term t : resourceTerms) {
+                    //compares if the term's percentage is less than the lowest so far
                     if (t.getAnswers(Main.database).get(0).getPercent() < lowest) {
                         lowest = t.getAnswers(Main.database).get(0).getPercent();
+                        //if it is lower, then the lowest term is changed to this one
                         lowestTerm = t;
                     }
                 }
+                //the term with the lowest percentage is then added to the list of session terms
                 sessionTerms.add(lowestTerm);
                 resourceTerms.remove(lowestTerm);
             }
@@ -105,8 +123,10 @@ public class LearningSession {
             for (int i=0; i<noOfRecentlyWrong;i++){
                 Random rand = new Random();
                 Boolean found = false;
+                //will run until a term that was answered incorrectly last is found
                 while (found == false){
                     int n = rand.nextInt(resourceTerms.size());
+                    //if the term's answer was wrong the last time, then it will be added to the list of session terms
                     if (resourceTerms.get(n).getAnswers(Main.database).get(0).getStatus() == false) {
                         sessionTerms.add(resourceTerms.get(n));
                         resourceTerms.remove(n);
@@ -115,10 +135,11 @@ public class LearningSession {
                 }
 
             }
-
+            //if the list of session terms is bigger than the number of items that are supposed to appear, the last item on the list will be removed until the sizes match
             while(sessionTerms.size() > learnItems) {
                 sessionTerms.remove(-1);
             }
+            //if the list of session terms is smaller than the number of items that are supposed to appear, and smaller than the number of terms in the resource, another term will randomly be added to the list
             while(sessionTerms.size() < learnItems && sessionTerms.size() < resourceSize) {
                 Random rand = new Random();
                 int n = rand.nextInt(resourceTerms.size());
